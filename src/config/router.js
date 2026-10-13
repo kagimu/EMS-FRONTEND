@@ -695,6 +695,19 @@ const router = createRouter({
       
 
 
+        // EMS Developer Test Console (H2.1): developer-only shell at /dev/ems.
+        // Registered ONLY in development builds (never in production) and kept
+        // outside the Education /main tree. Removable by deleting this route and
+        // the frontend/src/dev/** folder.
+        ...(import.meta.env.DEV
+            ? [{
+                path: '/dev/ems',
+                name: 'dev-ems',
+                component: () => import('@/dev/views/DevConsole.vue'),
+                meta: { devConsole: true },
+            }]
+            : []),
+
         {
             path: '/:pathMatch(.*)*',
             redirect: { name: "login" }
@@ -716,6 +729,13 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
+    // EMS Developer Test Console: developer-only routes run their own session
+    // model and must not be affected by the Education authentication guard.
+    if (to.path === '/dev' || to.path.startsWith('/dev/')) {
+        next();
+        return;
+    }
+
     let profile = localStorage.getItem("userProfile")
     let token = localStorage.getItem("token");
 
