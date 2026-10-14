@@ -3,7 +3,7 @@
     <header class="ems-topbar">
       <div class="ems-topbar__inner">
         <div class="ems-topbar__brand">
-          <img class="ems-topbar__logo" :src="logoUrl" alt="Wholesome" />
+          <img class="ems-topbar__logo" :src="logoUrl" alt="EMS" />
           <span class="ems-topbar__titles">
             <span class="ems-topbar__name">EMS</span>
             <span class="ems-topbar__sub">Enterprise Management Suite</span>
@@ -66,7 +66,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import api from '@/config/api.js'
-import logoUrl from '@/assets/images/victorious-logo.png'
+import logoUrl from '@/main/ems/assets/ems-logo.svg'
 import { useAuthStore } from '@/main/auth/store/auth.js'
 import '@/main/ems/ems-shell.css'
 

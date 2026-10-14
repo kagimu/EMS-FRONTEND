@@ -5,7 +5,7 @@
 
     <div class="ems-auth__content">
       <header class="ems-auth__brand">
-        <img class="ems-auth__logo" :src="logoUrl" alt="Wholesome Education" />
+        <img class="ems-auth__logo" :src="logoUrl" alt="EMS" />
         <div class="ems-auth__product">
           <span class="ems-auth__product-name">EMS</span>
           <span class="ems-auth__product-sub">Enterprise Management Suite</span>
@@ -29,7 +29,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 
-import logoUrl from '@/assets/images/victorious-logo.png'
+import logoUrl from '@/main/ems/assets/ems-logo.svg'
 import '@/main/ems/ems.css'
 
 // Self-hosted business/enterprise photograph (bundled under public/img, so the
