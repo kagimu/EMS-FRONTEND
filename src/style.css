@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* EMS system typeface: Poppins, applied to the whole application. Sets both the
+   Bootstrap body variable and a direct rule so Bootstrap components, Tailwind
+   utilities and native controls all inherit it. */
+:root {
+  --bs-font-sans-serif: 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --bs-body-font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html,
+body {
+  font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Force Poppins across the EMS system. The application contains many
+   component-level `font-family` declarations (Roboto, Spartan, Arial) and
+   Bootstrap is imported after this file, so a plain `body` rule is not enough.
+   This high-specificity + !important rule wins over those component styles,
+   while EXCLUDING icon fonts (Bootstrap Icons, Material Design Icons, Font
+   Awesome, Material Icons) whose glyphs require their own font family. */
+html body,
+html body *:not(i):not(.bi):not([class^='bi-']):not([class*=' bi-']):not(.mdi):not([class^='mdi-']):not([class*=' mdi-']):not(.fa):not([class^='fa-']):not([class*=' fa-']):not(.fas):not(.far):not(.fab):not(.material-icons) {
+  font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+}
+
 /* Global scrollbar styles */
 * {
     scrollbar-width: thin; /* For Firefox */

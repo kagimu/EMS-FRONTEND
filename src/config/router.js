@@ -62,6 +62,19 @@ import AdmissionList from '@/main/dashboard/studentAdmission/AdmissionList.vue';
 import Enrollment from '@/main/dashboard/enrollment/Enrollment.vue';
 import SetPassword from "@/main/auth/SetPassword.vue";
 import ResetPassword from "@/main/auth/ResetPassword.vue";
+
+// EMS production public interface (welcome / setup / login) and landing.
+import EmsEntry from "@/main/ems/EmsEntry.vue";
+import EmsLogin from "@/main/ems/EmsLogin.vue";
+import EmsSetup from "@/main/ems/EmsSetup.vue";
+import EmsCommercial from "@/main/ems/EmsCommercial.vue";
+import EmsAppShell from "@/main/ems/shell/EmsAppShell.vue";
+import EmsHome from "@/main/ems/pages/EmsHome.vue";
+import EmsSection from "@/main/ems/pages/EmsSection.vue";
+import EmsSubscription from "@/main/ems/pages/EmsSubscription.vue";
+import EmsAddons from "@/main/ems/pages/EmsAddons.vue";
+import EmsSettings from "@/main/ems/pages/EmsSettings.vue";
+import EmsOrganisationPage from "@/main/ems/pages/EmsOrganisationPage.vue";
 import Promotions from "@/main/dashboard/promotions/Promotions.vue"
 import InterviewManagement from "@/main/dashboard/studentApplication/InterviewManagement.vue"
 import Catering from "@/main/dashboard/catering/Catering.vue"
@@ -106,13 +119,44 @@ const loadDevConsole = () => import(/* @vite-ignore */ devConsoleModulePath);
 const router = createRouter({
     history: createWebHistory(),
     routes:[
+        // EMS public entry point: determines the welcome/setup vs login
+        // experience from the installation state. This is the product root.
+        { path: '/', name: 'ems-entry', component: EmsEntry },
+        // EMS production login (reuses the existing route name 'login').
+        { path: '/login', name: 'login', component: EmsLogin },
+        // First-time setup wizard (public; refuses when already configured).
+        { path: '/setup', name: 'ems-setup', component: EmsSetup },
+        // Commercial onboarding (installation package → quotation → test
+        // payment → setup token), public, preceding the account setup wizard.
+        { path: '/setup/commercial', name: 'ems-commercial', component: EmsCommercial },
+        // EMS application shell (Phase 1A): shared header, horizontal
+        // navigation and the reusable dashboard/content panels. All children
+        // require authentication; the backend enforces permissions.
         {
-            path: '/',
+            path: '/ems',
+            component: EmsAppShell,
+            meta: { requiresAuth: true },
+            children: [
+                { path: '', name: 'ems-dashboard', component: EmsHome, meta: { title: 'Dashboard', subtitle: 'Overview of your organisation.' } },
+                { path: 'organisation', name: 'ems-organisation', component: EmsOrganisationPage, meta: { title: 'Organisation', subtitle: 'Your organisation profile and custom fields.' } },
+                { path: 'stakeholders', name: 'ems-stakeholders', component: EmsSection, meta: { title: 'Stakeholders', subtitle: 'Owners and other stakeholders of your organisation.' } },
+                { path: 'workflows', name: 'ems-workflows', component: EmsSection, meta: { title: 'Workflows', subtitle: 'Approval requests and workflow items for your organisation.' } },
+                { path: 'add-ons', name: 'ems-addons', component: EmsAddons, meta: { title: 'Add-ons', subtitle: 'Modules and add-ons available to your organisation.' } },
+                { path: 'notifications', name: 'ems-notifications', component: EmsSection, meta: { title: 'Notifications', subtitle: 'In-app notifications addressed to you.' } },
+                { path: 'audit', name: 'ems-audit', component: EmsSection, meta: { title: 'Audit', subtitle: 'Cross-cutting audit facts for your organisation.' } },
+                { path: 'licensing', name: 'ems-licensing', component: EmsSection, meta: { title: 'Licensing', subtitle: 'Your organisation’s current EMS licence.' } },
+                { path: 'settings', name: 'ems-settings', component: EmsSettings, meta: { title: 'Settings', subtitle: 'Organisation, account and workflow settings.' } },
+                { path: 'subscription', name: 'ems-subscription', component: EmsSubscription, meta: { title: 'Subscription', subtitle: 'Purchase and manage your software subscription.' } },
+            ],
+        },
+
+        // Education addon public/auth pages (same names and behaviour; moved off
+        // the product root so Education is no longer the default entry page).
+        {
+            path: '/account',
             component: AuthMain,
-            redirect:{ name: 'login' },
             children:[
                 {path: 'welcome', component: Welcome, name:'welcome'},
-                {path: 'login', component: Login, name:'login'},
                 {path: 'register', component: Register, name:'register'},
                 {path: 'user-dashboard', component: UserDash, name:'user-dashboard'},
                 {path: 'application-guide', component: ApplicationGuide, name:'application-guide'},
@@ -727,7 +771,7 @@ const router = createRouter({
 
         {
             path: '/:pathMatch(.*)*',
-            redirect: { name: "login" }
+            redirect: { name: "ems-entry" }
         }
 
 
@@ -745,6 +789,20 @@ const router = createRouter({
 
 
 
+// Public EMS + Education auth routes that must always be reachable and must
+// never force a redirect into the Education dashboard.
+const publicEntryRoutes = [
+    "ems-entry",
+    "login",
+    "ems-setup",
+    "welcome",
+    "register",
+    "user-dashboard",
+    "application-guide",
+    "set-password",
+    "reset-password",
+];
+
 router.beforeEach((to, from, next) => {
     // EMS Developer Test Console: developer-only routes run their own session
     // model and must not be affected by the Education authentication guard.
@@ -756,17 +814,23 @@ router.beforeEach((to, from, next) => {
     let profile = localStorage.getItem("userProfile")
     let token = localStorage.getItem("token");
 
-    // let token = localStorage.getItem("token")
-
     const authStore = useAuthStore()
-    // alert(JSON.stringify(to.name))
     if (to.matched.some((record) => record.meta.requiresAuth)) {
-        // if (profile && token) {
         if (profile) {
             let user = JSON.parse(profile);
 
-            if(!localStorage.getItem("entity_number") && to.name !== "entity-dashboard" && user.type !== "User" && user.type !== "Staff"){
+            // Education entity-selection nudge. Excludes the EMS landing and the
+            // EMS entry flow so authenticated administrators are not pushed into
+            // the Education dashboard.
+            if (
+                !localStorage.getItem("entity_number") &&
+                to.name !== "entity-dashboard" &&
+                !String(to.path).startsWith("/ems") &&
+                user.type !== "User" &&
+                user.type !== "Staff"
+            ) {
                 next({ name: "entity-dashboard" });
+                return;
             }
 
             if (user !== null) {
@@ -776,17 +840,23 @@ router.beforeEach((to, from, next) => {
             } else {
                 next({ name: "dashboard" });
             }
-        }else {
-            next({
-                name: "login"
-            });
-        }
-    } else {
-        if (profile === null) {
-            next();
         } else {
-            next({name: "dashboard"});
+            next({ name: "login" });
         }
+        return;
+    }
+
+    // Public routes: the EMS entry/login/setup experience and the Education
+    // auth pages are always reachable — never redirected into Education.
+    if (publicEntryRoutes.includes(String(to.name))) {
+        next();
+        return;
+    }
+
+    if (profile === null) {
+        next();
+    } else {
+        next({ name: "dashboard" });
     }
 });
 

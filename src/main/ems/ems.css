@@ -1,0 +1,541 @@
+/* EMS — production public interface (welcome, setup, login) and landing.
+   Brand: indigo #2c2f8c (primary), accent #0b5dd7, interactive primary #016FFC.
+   Full-screen blurred background + frosted-glass card. Responsive and
+   reduced-motion aware. */
+
+:root {
+  --ems-brand: #2c2f8c;
+  --ems-brand-2: #0b5dd7;
+  --ems-brand-3: #016ffc;
+  --ems-ink: #1f2733;
+  --ems-muted: #5a6472;
+  --ems-line: #d7dce3;
+  --ems-danger: #b3261e;
+  --ems-ok: #1f7a44;
+  --ems-radius: 18px;
+}
+
+.ems-auth {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #0b1220;
+  font-feature-settings: "cv02", "cv03", "cv04";
+}
+
+/* Blurred, scaled photograph. Sits behind an overlay and the glass card. */
+.ems-auth__bg {
+  position: absolute;
+  inset: -6%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(7px) saturate(1.05) brightness(0.85);
+  transform: scale(1.08);
+  z-index: 0;
+}
+
+.ems-auth__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(1200px 600px at 20% 10%, rgba(44, 47, 140, 0.55), transparent 60%),
+    linear-gradient(180deg, rgba(9, 14, 30, 0.72) 0%, rgba(9, 14, 30, 0.86) 100%);
+}
+
+/* Fallback that keeps the page attractive if the photo fails to load. */
+.ems-auth--no-photo {
+  background: linear-gradient(135deg, #232a63 0%, #2c2f8c 45%, #0b5dd7 100%);
+}
+
+.ems-auth__content {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 32px 18px;
+}
+
+.ems-auth__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ems-auth__logo {
+  height: 46px;
+  width: auto;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 4px 8px;
+}
+
+.ems-auth__product {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.ems-auth__product-name {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.ems-auth__product-sub {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.ems-glass {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--ems-radius);
+  box-shadow: 0 24px 60px rgba(7, 12, 30, 0.38);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  padding: 30px 28px;
+}
+
+.ems-glass--wide {
+  max-width: 720px;
+}
+
+.ems-glass__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ems-brand-2);
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.ems-glass__heading {
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 800;
+  color: var(--ems-ink);
+  margin: 0 0 8px;
+}
+
+.ems-glass__sub {
+  font-size: 14px;
+  color: var(--ems-muted);
+  margin: 0 0 20px;
+}
+
+.ems-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ems-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ems-field__label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #3c4552;
+}
+
+.ems-field__req {
+  color: var(--ems-danger);
+  margin-left: 2px;
+}
+
+.ems-field__control {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--ems-line);
+  border-radius: 10px;
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ems-field__control--focus {
+  border-color: var(--ems-brand-3);
+  box-shadow: 0 0 0 3px rgba(1, 111, 252, 0.16);
+}
+
+.ems-field__control--error {
+  border-color: var(--ems-danger);
+}
+
+.ems-field__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 11px 12px;
+  font-size: 14px;
+  color: var(--ems-ink);
+  border-radius: 10px;
+}
+
+.ems-field__toggle {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 8px 12px;
+  color: var(--ems-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ems-field__error {
+  font-size: 12px;
+  color: var(--ems-danger);
+}
+
+.ems-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--ems-line);
+  border-radius: 10px;
+  background: #f6f8fb;
+  color: var(--ems-ink);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 16px;
+  cursor: pointer;
+  transition: transform 0.05s, filter 0.15s, background 0.15s;
+}
+
+.ems-btn:active {
+  transform: translateY(1px);
+}
+
+.ems-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ems-btn--primary {
+  background: linear-gradient(180deg, #3350c4 0%, var(--ems-brand) 100%);
+  border-color: var(--ems-brand);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(44, 47, 140, 0.28);
+}
+
+.ems-btn--accent {
+  background: linear-gradient(180deg, #1e78f0 0%, var(--ems-brand-2) 100%);
+  border-color: var(--ems-brand-2);
+  color: #fff;
+}
+
+.ems-btn--ghost {
+  background: transparent;
+  border-color: rgba(44, 47, 140, 0.35);
+  color: var(--ems-brand);
+}
+
+.ems-btn--block {
+  width: 100%;
+}
+
+.ems-btn__spinner {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: #fff;
+  animation: ems-spin 0.7s linear infinite;
+}
+
+.ems-btn--ghost .ems-btn__spinner {
+  border-color: rgba(44, 47, 140, 0.35);
+  border-top-color: var(--ems-brand);
+}
+
+@keyframes ems-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ems-alert {
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+
+.ems-alert--error {
+  background: #fdf3f3;
+  border-color: #f3c9c9;
+  color: var(--ems-danger);
+}
+
+.ems-alert--info {
+  background: #f1f5fd;
+  border-color: #c6d6f6;
+  color: #24479b;
+}
+
+.ems-alert--success {
+  background: #f0fdf6;
+  border-color: #bcf6d9;
+  color: var(--ems-ok);
+}
+
+.ems-steps {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 2px 0 18px;
+}
+
+.ems-step {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #8a93a0;
+}
+
+.ems-step__dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ems-line);
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ems-muted);
+}
+
+.ems-step--active .ems-step__dot {
+  border-color: var(--ems-brand);
+  background: var(--ems-brand);
+  color: #fff;
+}
+
+.ems-step--active .ems-step__label {
+  color: var(--ems-ink);
+  font-weight: 700;
+}
+
+.ems-step--done .ems-step__dot {
+  border-color: var(--ems-ok);
+  background: #e9f8f0;
+  color: var(--ems-ok);
+}
+
+.ems-step__connector {
+  width: 18px;
+  height: 1px;
+  background: var(--ems-line);
+}
+
+.ems-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 8px 4px;
+}
+
+.ems-state__spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid rgba(44, 47, 140, 0.2);
+  border-top-color: var(--ems-brand);
+  animation: ems-spin 0.8s linear infinite;
+}
+
+.ems-state__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ems-ink);
+  margin: 0;
+}
+
+.ems-state__msg {
+  font-size: 13px;
+  color: var(--ems-muted);
+  margin: 0;
+  max-width: 42ch;
+}
+
+.ems-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.ems-actions .ems-btn {
+  flex: 1 1 auto;
+}
+
+.ems-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+
+.ems-link {
+  color: var(--ems-brand);
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  text-decoration: none;
+}
+
+.ems-link:hover {
+  text-decoration: underline;
+}
+
+.ems-note {
+  font-size: 12.5px;
+  color: var(--ems-muted);
+  background: #f4f7fb;
+  border-left: 3px solid #9fb4d8;
+  border-radius: 8px;
+  padding: 9px 11px;
+  margin: 0;
+}
+
+.ems-muted {
+  color: var(--ems-muted);
+}
+
+.ems-small {
+  font-size: 12px;
+}
+
+.ems-kv {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 6px 14px;
+  font-size: 14px;
+  margin: 0;
+}
+
+.ems-kv dt {
+  color: var(--ems-muted);
+}
+
+.ems-kv dd {
+  margin: 0;
+  word-break: break-word;
+}
+
+.ems-dash {
+  min-height: 100vh;
+  background: #f4f6fb;
+}
+
+.ems-dash__header {
+  background: linear-gradient(180deg, #3350c4 0%, var(--ems-brand) 100%);
+  color: #fff;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ems-dash__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ems-dash__logo {
+  height: 38px;
+  width: auto;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 8px;
+  padding: 3px 7px;
+}
+
+.ems-dash__body {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 26px 18px;
+}
+
+.ems-dash__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.ems-card {
+  background: #fff;
+  border: 1px solid var(--ems-line);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.ems-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ems-ink);
+  margin: 0 0 10px;
+}
+
+.ems-auth__footer {
+  position: relative;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Tablet / mobile: reduce the blur cost and tighten spacing. */
+@media (max-width: 768px) {
+  .ems-auth__bg {
+    filter: blur(4px) brightness(0.82);
+  }
+  .ems-glass,
+  .ems-glass--wide {
+    max-width: 100%;
+    padding: 22px 18px;
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  }
+  .ems-kv {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ems-btn__spinner,
+  .ems-state__spinner {
+    animation-duration: 1.6s;
+  }
+}
