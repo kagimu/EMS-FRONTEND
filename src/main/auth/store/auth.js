@@ -83,8 +83,11 @@ export const useAuthStore = defineStore("auth", () => {
             })
     }
 
-    async function userRegistration(data) {
-        return await api.post("auth/register", data)
+    async function userRegistration(data, options = {}) {
+        // Reset so the caller can trust the result of THIS attempt only.
+        registrationResponse.value = null
+        errorMessage.value = null
+        return await api.post("auth/register", data, options)
             .then((response) => {
                 registrationResponse.value = response.data
             })
@@ -92,6 +95,9 @@ export const useAuthStore = defineStore("auth", () => {
                 if(error && error.response){
                     localStorage.removeItem("token")
                     errorMessage.value = error.response.data
+                } else {
+                    // Timeout / network error: no response to read.
+                    errorMessage.value = { message: (error && error.message) || 'Network error' }
                 }
             })
     }

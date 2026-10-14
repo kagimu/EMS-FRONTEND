@@ -198,6 +198,7 @@ import EmsStateBlock from '@/main/ems/components/EmsStateBlock.vue'
 import EmsSteps from '@/main/ems/components/EmsSteps.vue'
 import EmsSubscriptionPanel from '@/main/ems/components/EmsSubscriptionPanel.vue'
 import { SETUP_INITIALIZED, fetchSetupStatus } from '@/main/ems/services/setupStatus.js'
+import { fetchSetupProgress } from '@/main/ems/services/setupProgress.js'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -320,6 +321,11 @@ function validateRegister() {
   return !formErrors.first_name && !formErrors.second_name && !formErrors.gender && !formErrors.email && !formErrors.phone
 }
 
+// Bounded timeout for the registration call. It must exceed the database
+// lock-wait window (innodb_lock_wait_timeout, default 50s) so a lock wait is
+// reported by the server rather than surfacing as an ambiguous client timeout.
+const REGISTER_TIMEOUT_MS = 70000
+
 async function doRegister() {
   clearErrors()
   if (done.register || !validateRegister()) {
@@ -328,9 +334,11 @@ async function doRegister() {
   loading.value = true
   try {
     authStore.errorMessage = null
-    await authStore.userRegistration({ ...registerForm })
+    await authStore.userRegistration({ ...registerForm }, { timeout: REGISTER_TIMEOUT_MS })
     if (!authStore.registrationResponse) {
-      stepError.value = authStore.errorMessage?.message || 'Registration failed. Check the details and try again.'
+      // Registration failed OR the request timed out. Do NOT resubmit
+      // automatically — re-check the backend state and report it.
+      await resolveRegistrationOutcome()
       return
     }
     const token = authStore.registrationResponse.tokenInfo
@@ -345,6 +353,27 @@ async function doRegister() {
   } finally {
     loading.value = false
   }
+}
+
+// Determine what actually happened after a failed/timed-out registration by
+// re-checking the backend installation state. It never resubmits the form.
+async function resolveRegistrationOutcome() {
+  const backendMessage = authStore.errorMessage?.message
+  try {
+    const progress = await fetchSetupProgress()
+    const steps = progress?.steps || {}
+    if (steps.users_exist) {
+      signInForm.email = registerForm.email
+      stepError.value =
+        'Your account may already have been created. Do not register again — use “Sign in”, or resume activation through the existing activation/password-reset flow.'
+      return
+    }
+  } catch (error) {
+    stepError.value =
+      'We could not confirm whether your account was created. Please check your connection and try again before submitting registration.'
+    return
+  }
+  stepError.value = backendMessage || 'Registration could not be completed. Check the details and try again.'
 }
 
 // ---- Step 1: subscription (issues the activation token) ----
