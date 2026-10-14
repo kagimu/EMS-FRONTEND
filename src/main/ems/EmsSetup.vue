@@ -16,7 +16,7 @@
   <!-- Payment-confirmation gate: a validated, paid setup token is required
        before the customer can create an account or subscribe. -->
   <EmsAuthLayout
-    v-else-if="!gateConfirmed && !preview"
+    v-else-if="!gateConfirmed"
     eyebrow="Payment confirmation"
     heading="Confirm your setup payment"
   >
@@ -41,10 +41,6 @@
   </EmsAuthLayout>
 
   <EmsAuthLayout v-else wide eyebrow="First-time setup" heading="Set up your EMS">
-    <div v-if="preview" class="ems-alert ems-alert--info" role="status" style="margin-bottom: 14px;">
-      <strong>Preview mode.</strong> The installation status could not be verified. Steps that contact the EMS
-      backend will work if the backend is available; otherwise they will show an error.
-    </div>
     <EmsSteps :steps="stepLabels" :current="step" />
 
     <!-- Step 0 — register owner -->
@@ -191,7 +187,7 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 import axios from 'axios'
 import api from '@/config/api.js'
@@ -204,7 +200,6 @@ import EmsSubscriptionPanel from '@/main/ems/components/EmsSubscriptionPanel.vue
 import { SETUP_INITIALIZED, fetchSetupStatus } from '@/main/ems/services/setupStatus.js'
 
 const router = useRouter()
-const route = useRoute()
 const authStore = useAuthStore()
 const baseURL = `${import.meta.env.VITE_APP_BASE_URL}`
 
@@ -212,7 +207,6 @@ const stepLabels = ['Owner account', 'Subscription', 'Activate account', 'Sign i
 
 const phase = ref('loading') // loading | error | ready
 const errorMessage = ref('')
-const preview = ref(false)
 // Payment-confirmation gate: the raw setup token is held in memory only and is
 // required (validated) before the customer can create an account or subscribe.
 const gateConfirmed = ref(false)
@@ -253,14 +247,6 @@ const currentOwnerNumber = computed(() => authStore.profile?.number || authStore
 onMounted(checkStatus)
 
 async function checkStatus() {
-  // Explicit preview mode (arrived from the entry error state): skip the status
-  // gate so the interface can be reviewed. Never entered automatically.
-  if (route.query.preview === '1') {
-    preview.value = true
-    phase.value = 'ready'
-    return
-  }
-
   phase.value = 'loading'
   errorMessage.value = ''
   try {
@@ -498,13 +484,13 @@ async function doSelectOrg() {
     await api.post('main/eos/entity/current', null, { params: { entity_number: selectedEntity.value } })
 
     // Link (redeem) the paid setup token to this organisation. One-shot: the
-    // backend refuses a reused token. Skipped in preview mode (no token held).
+    // backend refuses a reused token.
     if (setupToken.value) {
       await api.post('main/ems/setup/redeem', { token: setupToken.value })
     }
 
     // Activate the licence with the subscription activation token now that the
-    // organisation exists (one-shot). Skipped in preview mode.
+    // organisation exists (one-shot).
     if (activationToken.value) {
       await api.post('main/ems/subscription/activate', { token: activationToken.value })
       subscriptionActive.value = true
