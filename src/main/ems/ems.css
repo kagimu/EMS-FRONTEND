@@ -61,6 +61,104 @@
   padding: 32px 18px;
 }
 
+/* Top-right utilities on the public auth screens. Used for an escape-hatch
+   "Sign in" for someone already registered who landed at the start of the
+   first-time setup. Frosted pill so it sits naturally on the blurred photo. */
+.ems-auth__topbar {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ems-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  backdrop-filter: blur(12px) saturate(1.25);
+  -webkit-backdrop-filter: blur(12px) saturate(1.25);
+  box-shadow: 0 8px 22px rgba(7, 12, 30, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.08s, box-shadow 0.15s;
+}
+
+.ems-pill:hover {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: #ffffff;
+  color: var(--ems-brand);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(7, 12, 30, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+}
+
+.ems-pill:active {
+  transform: translateY(0);
+}
+
+.ems-pill:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
+}
+
+.ems-pill__icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  display: block;
+}
+
+/* Testing-phase reset pill, sits to the left of the Sign in pill. */
+.ems-pill--reset {
+  border-color: rgba(255, 178, 172, 0.55);
+  background: rgba(179, 38, 30, 0.32);
+}
+
+.ems-pill--reset:hover {
+  background: #c73028;
+  border-color: #f0b4af;
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(120, 12, 8, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Reset dialog. Teleported to <body>, so it is not clipped by the auth shell. */
+.ems-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.ems-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 8, 20, 0.62);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.ems-modal__card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+}
+
 .ems-auth__brand {
   display: flex;
   align-items: center;
@@ -530,6 +628,14 @@
   }
   .ems-kv {
     grid-template-columns: 1fr;
+  }
+  .ems-auth__topbar {
+    top: 14px;
+    right: 14px;
+  }
+  .ems-pill {
+    padding: 9px 14px;
+    font-size: 12.5px;
   }
 }
 

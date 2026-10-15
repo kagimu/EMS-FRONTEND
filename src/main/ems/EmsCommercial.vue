@@ -1,5 +1,8 @@
 <template>
-  <EmsAuthLayout wide eyebrow="Commercial setup" heading="Set up your EMS installation">
+  <EmsAuthLayout wide test-reset eyebrow="Commercial setup" heading="Set up your EMS installation">
+    <template #topRight>
+      <EmsSignInPill />
+    </template>
     <div class="ems-alert ems-alert--info" role="status">
       DEVELOPMENT / TEST PAYMENT ONLY. NO REAL MONEY WILL BE PROCESSED.
     </div>
@@ -163,6 +166,7 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import EmsAuthLayout from '@/main/ems/components/EmsAuthLayout.vue'
 import EmsField from '@/main/ems/components/EmsField.vue'
+import EmsSignInPill from '@/main/ems/components/EmsSignInPill.vue'
 
 const router = useRouter()
 const baseURL = `${import.meta.env.VITE_APP_BASE_URL}`

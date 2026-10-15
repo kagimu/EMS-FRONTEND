@@ -1,6 +1,9 @@
 <template>
   <!-- Initial status check -->
-  <EmsAuthLayout v-if="phase !== 'ready'">
+  <EmsAuthLayout v-if="phase !== 'ready'" test-reset>
+    <template #topRight>
+      <EmsSignInPill />
+    </template>
     <EmsStateBlock
       :state="phase === 'error' ? 'error' : 'loading'"
       :title="phase === 'error' ? 'We could not reach EMS' : 'Preparing first-time setup'"
@@ -17,9 +20,13 @@
        before the customer can create an account or subscribe. -->
   <EmsAuthLayout
     v-else-if="!gateConfirmed"
+    test-reset
     eyebrow="Payment confirmation"
     heading="Confirm your setup payment"
   >
+    <template #topRight>
+      <EmsSignInPill />
+    </template>
     <p class="ems-note">
       Enter the setup token issued after your setup payment. This confirms that you have paid and are eligible to
       continue to account setup and subscription.
@@ -40,7 +47,10 @@
     </p>
   </EmsAuthLayout>
 
-  <EmsAuthLayout v-else wide eyebrow="First-time setup" heading="Set up your EMS">
+  <EmsAuthLayout v-else wide test-reset eyebrow="First-time setup" heading="Set up your EMS">
+    <template #topRight>
+      <EmsSignInPill />
+    </template>
     <EmsSteps :steps="stepLabels" :current="step" />
 
     <!-- Step 0 — register owner -->
@@ -196,6 +206,7 @@ import EmsAuthLayout from '@/main/ems/components/EmsAuthLayout.vue'
 import EmsField from '@/main/ems/components/EmsField.vue'
 import EmsStateBlock from '@/main/ems/components/EmsStateBlock.vue'
 import EmsSteps from '@/main/ems/components/EmsSteps.vue'
+import EmsSignInPill from '@/main/ems/components/EmsSignInPill.vue'
 import EmsSubscriptionPanel from '@/main/ems/components/EmsSubscriptionPanel.vue'
 import { SETUP_INITIALIZED, fetchSetupStatus } from '@/main/ems/services/setupStatus.js'
 import { fetchSetupProgress } from '@/main/ems/services/setupProgress.js'

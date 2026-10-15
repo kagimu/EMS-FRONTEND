@@ -4,6 +4,11 @@
     <div class="ems-auth__overlay"></div>
 
     <div class="ems-auth__content">
+      <div v-if="showTopbar" class="ems-auth__topbar">
+        <component :is="EmsTestReset" v-if="showTestReset" />
+        <slot name="topRight" />
+      </div>
+
       <header class="ems-auth__brand">
         <img class="ems-auth__logo" :src="logoUrl" alt="EMS" />
         <div class="ems-auth__product">
@@ -27,7 +32,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, useSlots } from 'vue'
 
 import logoUrl from '@/main/ems/assets/ems-logo.svg'
 import '@/main/ems/ems.css'
@@ -38,12 +43,30 @@ import '@/main/ems/ems.css'
 // (Unsplash License: free for commercial and non-commercial use).
 const backgroundUrl = '/img/ems-business-bg.jpg'
 
-defineProps({
+const props = defineProps({
   heading: { type: String, default: '' },
   subheading: { type: String, default: '' },
   eyebrow: { type: String, default: '' },
   wide: { type: Boolean, default: false },
+  // Testing phase only: show the top-right "Reset test" escape hatch next to
+  // the Sign in pill. Ignored unless the build flag is also set.
+  testReset: { type: Boolean, default: false },
 })
+
+const slots = useSlots()
+
+// Testing-only reset control. Dynamically imported ONLY when the flag is set at
+// build time, so it never enters a production module graph (no source default
+// enables it).
+const TEST_RESET_ENABLED = import.meta.env.VITE_ENABLE_TEST_RESET === 'true'
+const EmsTestReset = TEST_RESET_ENABLED
+  ? defineAsyncComponent(() => import('@/main/ems/components/EmsTestReset.vue'))
+  : null
+
+const showTestReset = computed(() => props.testReset && !!EmsTestReset)
+// The top-right bar appears when there is a page action (e.g. Sign in) or the
+// testing reset control.
+const showTopbar = computed(() => !!slots.topRight || showTestReset.value)
 
 const year = new Date().getFullYear()
 const photoOk = ref(true)
