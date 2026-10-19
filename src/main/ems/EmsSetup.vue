@@ -210,6 +210,7 @@ import EmsSignInPill from '@/main/ems/components/EmsSignInPill.vue'
 import EmsSubscriptionPanel from '@/main/ems/components/EmsSubscriptionPanel.vue'
 import { SETUP_INITIALIZED, fetchSetupStatus } from '@/main/ems/services/setupStatus.js'
 import { fetchSetupProgress } from '@/main/ems/services/setupProgress.js'
+import { clearLocalSession } from '@/main/ems/services/session.js'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -268,6 +269,10 @@ async function checkStatus() {
       router.replace({ name: 'login' })
       return
     }
+    // A fresh installation cannot have a valid session. Clear any stale browser
+    // session left over from a pre-reset owner so registration starts clean and
+    // the app does not keep bouncing to the dashboard/login on a 401.
+    clearLocalSession()
     phase.value = 'ready'
   } catch (error) {
     errorMessage.value = 'We could not establish the installation status. Check your connection and try again.'

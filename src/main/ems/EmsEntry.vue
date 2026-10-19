@@ -29,6 +29,7 @@ import { useRouter } from 'vue-router'
 import EmsAuthLayout from '@/main/ems/components/EmsAuthLayout.vue'
 import EmsStateBlock from '@/main/ems/components/EmsStateBlock.vue'
 import { SETUP_UNINITIALIZED, fetchSetupStatus } from '@/main/ems/services/setupStatus.js'
+import { clearLocalSession } from '@/main/ems/services/session.js'
 
 const router = useRouter()
 
@@ -37,12 +38,27 @@ const phase = ref('loading')
 const errorMessage = ref('')
 
 onMounted(async () => {
-  // Already authenticated in this browser → go straight into the EMS area.
+  // A stored session is only honoured when the installation still has an owner.
+  // After a test reset the browser can retain a session for a deleted user, so
+  // verify the installation state before routing into the EMS area — otherwise
+  // the stale token 401s and bounces the user to the login screen.
   const profile = localStorage.getItem('userProfile')
   const token = localStorage.getItem('token')
   if (profile && token) {
-    router.replace({ name: 'ems-dashboard' })
-    return
+    try {
+      const state = await fetchSetupStatus()
+      if (state === SETUP_UNINITIALIZED) {
+        clearLocalSession()
+        router.replace({ name: 'ems-commercial' })
+        return
+      }
+      router.replace({ name: 'ems-dashboard' })
+      return
+    } catch (error) {
+      // Status unknown: use the normal load/error handling rather than guess.
+      await load()
+      return
+    }
   }
   await load()
 })

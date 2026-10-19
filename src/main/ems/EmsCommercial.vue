@@ -210,7 +210,8 @@ function apiError(error, fallback) {
   return error?.response?.data?.message || fallback
 }
 
-onMounted(async () => {
+async function loadPackages() {
+  phase.value = 'loading'
   try {
     const response = await axios.get(`${baseURL}/setup/packages`, { headers: { Accept: 'application/json' }, timeout: 15000 })
     packages.value = response?.data?.data || []
@@ -223,6 +224,10 @@ onMounted(async () => {
     errorMessage.value = 'Could not load installation packages. Please check your connection and try again.'
     phase.value = 'error'
   }
+}
+
+onMounted(async () => {
+  await loadPackages()
 
   // Location catalogue for on-site transport (self-hosted; no external map API).
   try {
@@ -254,7 +259,17 @@ async function createOrder() {
     quote.value = response?.data?.data?.quote || null
     step.value = 2
   } catch (error) {
-    stepError.value = apiError(error, 'Could not create the quotation. Check the configuration and try again.')
+    const message = apiError(error, '')
+    // A test reset deletes the catalogue, so a selection made before the reset
+    // can reference a package number that no longer exists. Refresh the list so
+    // the operator can re-select instead of retrying a dead package.
+    if (error?.response?.status === 400 && /installation package/i.test(message)) {
+      selectedPackageNumber.value = ''
+      await loadPackages()
+      stepError.value = 'The installation catalogue was refreshed after a reset. Please select a package again.'
+      return
+    }
+    stepError.value = message || 'Could not create the quotation. Check the configuration and try again.'
   } finally {
     loading.value = false
   }

@@ -81,9 +81,17 @@
           </div>
           <div class="ems-actions">
             <button
-              v-if="result.ok || result.unknown"
+              v-if="result.ok"
               type="button"
               class="ems-btn ems-btn--primary ems-btn--block"
+              @click="restartSetup"
+            >
+              Start setup again
+            </button>
+            <button
+              v-if="result.ok || result.unknown"
+              type="button"
+              class="ems-btn ems-btn--block"
               :disabled="verifying"
               @click="verifyReset"
             >
@@ -110,7 +118,7 @@ import { nextTick, ref } from 'vue'
 
 import axios from 'axios'
 import api from '@/config/api.js'
-import { useAuthStore } from '@/main/auth/store/auth.js'
+import { clearLocalSession } from '@/main/ems/services/session.js'
 import { fetchSetupStatus } from '@/main/ems/services/setupStatus.js'
 import { fetchSetupProgress } from '@/main/ems/services/setupProgress.js'
 
@@ -124,7 +132,6 @@ const PHRASE = 'RESET EMS TEST SYSTEM'
 // the server rather than surfacing as an ambiguous client timeout.
 const RESET_TIMEOUT_MS = 70000
 
-const authStore = useAuthStore()
 const baseURL = `${import.meta.env.VITE_APP_BASE_URL}`
 
 const isOpen = ref(false)
@@ -162,15 +169,11 @@ function submitPassword() {
   step.value = 'confirm'
 }
 
-function clearSession() {
-  localStorage.removeItem('token')
-  localStorage.removeItem('userProfile')
-  localStorage.removeItem('abilities')
-  sessionStorage.clear()
-  authStore.token = null
-  authStore.userNumber = null
-  authStore.profile = null
-  authStore.loginResponse = null
+// A full navigation (not just a router push) guarantees the commercial/setup
+// pages re-mount with a fresh catalogue and no stale session or in-memory state.
+function restartSetup() {
+  clearLocalSession()
+  window.location.assign('/setup/commercial')
 }
 
 async function doReset() {
@@ -191,7 +194,7 @@ async function doReset() {
       { confirmation: PHRASE, password: password.value },
       { timeout: RESET_TIMEOUT_MS },
     )
-    clearSession()
+    clearLocalSession()
     result.value = {
       ok: true,
       unknown: false,
