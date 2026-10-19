@@ -1,7 +1,88 @@
 <template>
   <div>
-    <!-- Organisation details -->
-    <EmsContentPanel
+    <div class="ems-org-tabs" role="tablist" aria-label="Organisation sections">
+      <button
+        type="button"
+        class="ems-org-tab"
+        :class="{ 'ems-org-tab--active': activeTab === 'profile' }"
+        role="tab"
+        :aria-selected="activeTab === 'profile'"
+        @click="setTab('profile')"
+      >
+        <i class="bi bi-building" aria-hidden="true"></i>
+        Profile
+      </button>
+      <button
+        type="button"
+        class="ems-org-tab"
+        :class="{ 'ems-org-tab--active': activeTab === 'structure' }"
+        role="tab"
+        :aria-selected="activeTab === 'structure'"
+        @click="setTab('structure')"
+      >
+        <i class="bi bi-diagram-3" aria-hidden="true"></i>
+        Structure
+      </button>
+      <button
+        type="button"
+        class="ems-org-tab"
+        :class="{ 'ems-org-tab--active': activeTab === 'people' }"
+        role="tab"
+        :aria-selected="activeTab === 'people'"
+        @click="setTab('people')"
+      >
+        <i class="bi bi-people" aria-hidden="true"></i>
+        People &amp; Ownership
+      </button>
+      <button
+        type="button"
+        class="ems-org-tab"
+        :class="{ 'ems-org-tab--active': activeTab === 'assignments' }"
+        role="tab"
+        :aria-selected="activeTab === 'assignments'"
+        @click="setTab('assignments')"
+      >
+        <i class="bi bi-person-badge" aria-hidden="true"></i>
+        Assignments
+      </button>
+      <button
+        type="button"
+        class="ems-org-tab"
+        :class="{ 'ems-org-tab--active': activeTab === 'reporting' }"
+        role="tab"
+        :aria-selected="activeTab === 'reporting'"
+        @click="setTab('reporting')"
+      >
+        <i class="bi bi-diagram-2" aria-hidden="true"></i>
+        Reporting
+      </button>
+      <button
+        type="button"
+        class="ems-org-tab"
+        :class="{ 'ems-org-tab--active': activeTab === 'authority' }"
+        role="tab"
+        :aria-selected="activeTab === 'authority'"
+        @click="setTab('authority')"
+      >
+        <i class="bi bi-shield-check" aria-hidden="true"></i>
+        Decision Authority
+      </button>
+      <button
+        type="button"
+        class="ems-org-tab"
+        :class="{ 'ems-org-tab--active': activeTab === 'approvals' }"
+        role="tab"
+        :aria-selected="activeTab === 'approvals'"
+        @click="setTab('approvals')"
+      >
+        <i class="bi bi-check2-square" aria-hidden="true"></i>
+        Approvals
+      </button>
+    </div>
+
+    <div v-show="activeTab === 'profile'">
+      <!-- Organisation details -->
+      <EmsContentPanel
       title="Organisation details"
       icon="bi bi-building"
       description="The profile of your current organisation."
@@ -29,7 +110,10 @@
         <div v-if="orgNote" class="ems-alert" :class="orgNote.ok ? 'ems-alert--success' : 'ems-alert--error'" role="status">
           {{ orgNote.text }}
         </div>
-        <div class="ems-actions">
+        <p v-if="!canUpdateEntity" class="ems-small ems-muted">
+          You do not have permission to edit the organisation profile.
+        </p>
+        <div v-if="canUpdateEntity" class="ems-actions">
           <button type="button" class="ems-btn ems-btn--primary" :disabled="orgSaving" @click="saveOrganisation">
             {{ orgSaving ? 'Saving…' : 'Save organisation' }}
           </button>
@@ -49,7 +133,7 @@
       :error-message="fieldsError"
     >
       <template v-if="fieldsState === 'ready'" #actions>
-        <button type="button" class="ems-btn" @click="showManage = !showManage">
+        <button v-if="canManageOrganisation" type="button" class="ems-btn" @click="showManage = !showManage">
           {{ showManage ? 'Hide field manager' : 'Manage fields' }}
         </button>
       </template>
@@ -86,7 +170,10 @@
           <div v-if="valuesNote" class="ems-alert" :class="valuesNote.ok ? 'ems-alert--success' : 'ems-alert--error'" role="status">
             {{ valuesNote.text }}
           </div>
-          <div class="ems-actions">
+          <p v-if="!canManageOrganisation" class="ems-small ems-muted">
+            You can view custom fields but not change them.
+          </p>
+          <div v-if="canManageOrganisation" class="ems-actions">
             <button type="button" class="ems-btn ems-btn--primary" :disabled="valuesSaving" @click="saveValues">
               {{ valuesSaving ? 'Saving…' : 'Save custom fields' }}
             </button>
@@ -155,15 +242,69 @@
         </section>
       </div>
     </EmsContentPanel>
+    </div>
+
+    <EmsOrganisationStructure v-if="activeTab === 'structure'" />
+    <EmsOrganisationPeople v-if="activeTab === 'people'" />
+    <EmsOrganisationAssignments v-if="activeTab === 'assignments'" />
+    <EmsOrganisationReporting v-if="activeTab === 'reporting'" />
+    <EmsOrganisationAuthority v-if="activeTab === 'authority'" />
+    <EmsOrganisationApprovals v-if="activeTab === 'approvals'" />
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAbility } from '@casl/vue'
 
 import api from '@/config/api.js'
 import EmsContentPanel from '@/main/ems/components/EmsContentPanel.vue'
 import EmsField from '@/main/ems/components/EmsField.vue'
+import EmsOrganisationStructure from '@/main/ems/components/EmsOrganisationStructure.vue'
+import EmsOrganisationPeople from '@/main/ems/components/EmsOrganisationPeople.vue'
+import EmsOrganisationAssignments from '@/main/ems/components/EmsOrganisationAssignments.vue'
+import EmsOrganisationAuthority from '@/main/ems/components/EmsOrganisationAuthority.vue'
+import EmsOrganisationReporting from '@/main/ems/components/EmsOrganisationReporting.vue'
+import EmsOrganisationApprovals from '@/main/ems/components/EmsOrganisationApprovals.vue'
+
+const route = useRoute()
+const router = useRouter()
+const { can } = useAbility()
+
+// Presentation-only permission checks. The backend remains authoritative.
+const canManageOrganisation = computed(
+  () =>
+    can('manage_ems_organisation', 'general') ||
+    can('manage_ems_organisation', 'all') ||
+    can('manage', 'all'),
+)
+const canUpdateEntity = computed(
+  () =>
+    can('can_update_entity', 'general') ||
+    can('can_update_entity', 'all') ||
+    can('manage', 'all'),
+)
+
+const ORGANISATION_TABS = ['profile', 'structure', 'people', 'assignments', 'reporting', 'authority', 'approvals']
+const activeTab = ref(ORGANISATION_TABS.includes(route.query.tab) ? route.query.tab : 'profile')
+
+function setTab(tab) {
+  if (!ORGANISATION_TABS.includes(tab)) {
+    return
+  }
+  activeTab.value = tab
+  router.replace({ query: { ...route.query, tab } })
+}
+
+watch(
+  () => route.query.tab,
+  (tab) => {
+    if (ORGANISATION_TABS.includes(tab)) {
+      activeTab.value = tab
+    }
+  },
+)
 
 // ---- Organisation details ----
 const form = reactive({ entity_number: '', name: '', phone: '', email: '', address: '', website: '', facebook: '', instagram: '', twitter: '', whatsapp: '', linkedin: '' })
@@ -342,3 +483,59 @@ onMounted(() => {
   loadCustomFields()
 })
 </script>
+
+<style scoped>
+.ems-org-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid #e6e9f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.ems-org-tab {
+  border: 0;
+  background: transparent;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #5b6472;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.ems-org-tab:hover {
+  background: #f1f4fb;
+  color: var(--ems-brand);
+}
+
+.ems-org-tab--active,
+.ems-org-tab--active:hover {
+  background: var(--ems-brand);
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(44, 47, 140, 0.22);
+}
+
+@media (max-width: 640px) {
+  .ems-org-tabs {
+    flex-wrap: nowrap;
+    padding: 5px;
+  }
+
+  .ems-org-tab {
+    padding: 8px 12px;
+    font-size: 12.5px;
+  }
+}
+</style>

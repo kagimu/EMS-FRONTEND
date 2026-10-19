@@ -8,7 +8,7 @@
         :value="cardValue(cards.units)"
         :available="cards.units.available"
         :reason="cards.units.reason"
-        to="/ems/organisation"
+        :to="{ path: '/ems/organisation', query: { tab: 'structure' } }"
       />
       <EmsSummaryCard
         label="Stakeholders"
@@ -17,7 +17,7 @@
         :value="cardValue(cards.stakeholders)"
         :available="cards.stakeholders.available"
         :reason="cards.stakeholders.reason"
-        to="/ems/stakeholders"
+        :to="{ path: '/ems/organisation', query: { tab: 'people' } }"
       />
       <EmsSummaryCard
         label="Open approvals"
@@ -26,7 +26,7 @@
         :value="cardValue(cards.approvals)"
         :available="cards.approvals.available"
         :reason="cards.approvals.reason"
-        to="/ems/workflows"
+        :to="{ path: '/ems/organisation', query: { tab: 'approvals' } }"
       />
       <EmsSummaryCard
         label="Unread notifications"
