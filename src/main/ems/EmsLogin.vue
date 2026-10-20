@@ -1,5 +1,5 @@
 <template>
-  <EmsAuthLayout eyebrow="Sign in" heading="Welcome back" subheading="Sign in to your EMS account.">
+  <EmsAuthLayout test-reset eyebrow="Sign in" heading="Welcome back" subheading="Sign in to your EMS account.">
     <form class="ems-form" novalidate @submit.prevent="doLogin">
       <div v-if="formError" class="ems-alert ems-alert--error" role="alert">{{ formError }}</div>
 
@@ -32,21 +32,18 @@
 
     <div class="ems-links">
       <router-link class="ems-link" :to="{ name: 'reset-password' }">Forgot password?</router-link>
-      <button v-if="showSetupLink" type="button" class="ems-link" @click="goToSetup">
-        First-time setup
-      </button>
+      <router-link class="ems-link" :to="{ name: 'ems-setup' }">First-time setup</router-link>
     </div>
   </EmsAuthLayout>
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/main/auth/store/auth.js'
 import EmsAuthLayout from '@/main/ems/components/EmsAuthLayout.vue'
 import EmsField from '@/main/ems/components/EmsField.vue'
-import { SETUP_UNINITIALIZED, fetchSetupStatus } from '@/main/ems/services/setupStatus.js'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -55,19 +52,8 @@ const form = reactive({ email: '', password: '' })
 const errors = reactive({ email: '', password: '' })
 const formError = ref('')
 const loading = ref(false)
-const showSetupLink = ref(false)
 
 const canSubmit = computed(() => form.email.length > 0 && form.password.length > 0)
-
-onMounted(async () => {
-  // Show the first-time setup link only when the installation genuinely permits
-  // it. On any status failure, hide it (never assume a new installation).
-  try {
-    showSetupLink.value = (await fetchSetupStatus()) === SETUP_UNINITIALIZED
-  } catch (error) {
-    showSetupLink.value = false
-  }
-})
 
 function validate() {
   errors.email = ''
@@ -121,9 +107,5 @@ function routeAfterLogin(profile) {
   }
   // Non-administrators continue into the existing product (Education addon).
   router.push({ name: 'dashboard' })
-}
-
-function goToSetup() {
-  router.push({ name: 'ems-setup' })
 }
 </script>
