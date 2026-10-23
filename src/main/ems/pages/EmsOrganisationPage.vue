@@ -1,5 +1,7 @@
 <template>
   <div>
+    <EmsOrganisationSetupGuide />
+
     <div class="ems-org-tabs" role="tablist" aria-label="Organisation sections">
       <button
         type="button"
@@ -80,7 +82,14 @@
       </button>
     </div>
 
-    <div v-show="activeTab === 'profile'">
+    <motion.div
+      :key="activeTab"
+      class="ems-tab-panel"
+      :initial="{ opacity: 0, y: 14 }"
+      :animate="{ opacity: 1, y: 0 }"
+      :transition="{ type: 'spring', stiffness: 340, damping: 30 }"
+    >
+    <div v-if="activeTab === 'profile'">
       <!-- Organisation details -->
       <EmsContentPanel
       title="Organisation details"
@@ -250,6 +259,7 @@
     <EmsOrganisationReporting v-if="activeTab === 'reporting'" />
     <EmsOrganisationAuthority v-if="activeTab === 'authority'" />
     <EmsOrganisationApprovals v-if="activeTab === 'approvals'" />
+    </motion.div>
   </div>
 </template>
 
@@ -257,8 +267,10 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAbility } from '@casl/vue'
+import { motion } from 'motion-v'
 
 import api from '@/config/api.js'
+import { useAuthStore } from '@/main/auth/store/auth.js'
 import EmsContentPanel from '@/main/ems/components/EmsContentPanel.vue'
 import EmsField from '@/main/ems/components/EmsField.vue'
 import EmsOrganisationStructure from '@/main/ems/components/EmsOrganisationStructure.vue'
@@ -267,20 +279,26 @@ import EmsOrganisationAssignments from '@/main/ems/components/EmsOrganisationAss
 import EmsOrganisationAuthority from '@/main/ems/components/EmsOrganisationAuthority.vue'
 import EmsOrganisationReporting from '@/main/ems/components/EmsOrganisationReporting.vue'
 import EmsOrganisationApprovals from '@/main/ems/components/EmsOrganisationApprovals.vue'
+import EmsOrganisationSetupGuide from '@/main/ems/components/EmsOrganisationSetupGuide.vue'
 
 const route = useRoute()
 const router = useRouter()
 const { can } = useAbility()
+const authStore = useAuthStore()
+const isInstallationAdmin = computed(() => authStore.profile?.type === 'Admin')
 
-// Presentation-only permission checks. The backend remains authoritative.
+// Presentation-only permission checks. An installation Admin always sees the
+// management controls; the backend remains authoritative.
 const canManageOrganisation = computed(
   () =>
+    isInstallationAdmin.value ||
     can('manage_ems_organisation', 'general') ||
     can('manage_ems_organisation', 'all') ||
     can('manage', 'all'),
 )
 const canUpdateEntity = computed(
   () =>
+    isInstallationAdmin.value ||
     can('can_update_entity', 'general') ||
     can('can_update_entity', 'all') ||
     can('manage', 'all'),
@@ -512,7 +530,7 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 
 .ems-org-tab:hover {
@@ -520,11 +538,19 @@ onMounted(() => {
   color: var(--ems-brand);
 }
 
+.ems-org-tab:active {
+  transform: scale(0.98);
+}
+
 .ems-org-tab--active,
 .ems-org-tab--active:hover {
   background: var(--ems-brand);
   color: #fff;
   box-shadow: 0 6px 14px rgba(44, 47, 140, 0.22);
+}
+
+.ems-tab-panel {
+  min-width: 0;
 }
 
 @media (max-width: 640px) {

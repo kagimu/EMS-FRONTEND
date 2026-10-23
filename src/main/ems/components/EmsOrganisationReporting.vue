@@ -22,10 +22,18 @@
       <p class="ems-empty__title">No reporting lines recorded yet</p>
       <p class="ems-empty__msg">
         Link one assignment to the assignment of the person it reports to. Both ends must be active assignments
-        in this organisation.
+        in this organisation. Reporting describes management structure; it does not grant software permissions.
       </p>
-      <div v-if="canManage" class="ems-actions" style="justify-content: center; margin-top: 14px;">
+      <div v-if="canManage && activeAssignments.length >= 2" class="ems-actions" style="justify-content: center; margin-top: 14px;">
         <button type="button" class="ems-btn ems-btn--primary" @click="openCreate">Create the first line</button>
+      </div>
+      <div v-else-if="canManage" class="ems-actions" style="justify-content: center; margin-top: 14px;">
+        <router-link
+          class="ems-btn ems-btn--primary"
+          :to="{ path: '/ems/organisation', query: { tab: 'assignments' } }"
+        >
+          Create at least two active assignments first
+        </router-link>
       </div>
     </template>
 
@@ -37,6 +45,11 @@
       <p v-if="!canManage" class="ems-small ems-muted">
         You can view reporting lines. Creating, editing and changing status requires the assignment management
         permission.
+      </p>
+
+      <p class="ems-small ems-muted">
+        A reporting relationship connects two assignments: the subordinate assignment reports to the manager
+        assignment. Both must be active. Reporting does not grant software permissions. Create assignments first.
       </p>
 
       <p v-if="unitsError" class="ems-small ems-muted">{{ unitsError }}</p>

@@ -21,7 +21,8 @@
     <template #empty>
       <p class="ems-empty__title">No organisation units yet</p>
       <p class="ems-empty__msg">
-        Units describe how your organisation is structured. Create the first unit to get started.
+        Units describe how your organisation is structured. Create the first unit before assigning people, so
+        assignments have a department, branch or division to point to.
       </p>
       <div v-if="canManage" class="ems-actions" style="justify-content: center; margin-top: 14px;">
         <button type="button" class="ems-btn ems-btn--primary" @click="openCreate()">Create first unit</button>
@@ -36,6 +37,11 @@
       <p v-if="!canManage" class="ems-small ems-muted">
         You can view the organisation structure. Creating, editing and deactivating units requires the
         organisation management permission.
+      </p>
+
+      <p class="ems-small ems-muted">
+        An organisational unit is a department, branch, division or team. Parent units contain child units, so
+        you can build a hierarchy to any depth. Create units before assigning people.
       </p>
 
       <div class="ems-toolbar">

@@ -21,7 +21,9 @@
     <template #empty>
       <p class="ems-empty__title">No decision authorities recorded yet</p>
       <p class="ems-empty__msg">
-        Define who may approve each decision type, at which level and within which amount limits.
+        Define who may approve each decision type, at which level and within which amount limits. Authority uses
+        software roles or stakeholder types; approvers need <code>act_ems_approval</code> and, for a unit scope,
+        an active assignment in that unit.
       </p>
       <div v-if="canManage" class="ems-actions" style="justify-content: center; margin-top: 14px;">
         <button type="button" class="ems-btn ems-btn--primary" @click="openCreate">Create the first authority</button>
@@ -70,6 +72,12 @@
         currency is modelled.
       </p>
 
+      <p class="ems-small ems-muted">
+        A <strong>software role</strong> is a set of EMS permissions, not a job title. Approvers must be able to
+        sign in and hold <code>act_ems_approval</code>; a unit-scoped rule also requires an active assignment in
+        that unit.
+      </p>
+
       <div v-if="!filteredAuthorities.length" class="ems-empty">
         <p class="ems-empty__title">No authorities match your filters</p>
         <p class="ems-empty__msg">Try a different search, decision type or status.</p>
@@ -97,7 +105,12 @@
                 </button>
               </td>
               <td>Level {{ item.approval_level }}</td>
-              <td>{{ holderLabel(item) }}</td>
+              <td>
+                {{ holderLabel(item) }}
+                <div v-if="roleLacksApproval(item.role_number)" class="ems-small ems-muted">
+                  No approval permission
+                </div>
+              </td>
               <td>{{ scopeLabel(item.organisation_unit_number) }}</td>
               <td class="ems-small ems-muted">{{ limitsLabel(item) }}</td>
               <td><span class="ems-badge" :class="statusClass(item.status)">{{ item.status }}</span></td>
@@ -295,15 +308,28 @@
         <span v-if="formErrors.anchor" class="ems-field__error">{{ formErrors.anchor }}</span>
       </label>
 
+      <div v-if="selectedRoleLacksApproval" class="ems-alert ems-alert--info" role="status">
+        This role does not include <code>act_ems_approval</code>. Members may be snapshotted as candidates, but
+        they cannot approve, reject or return requests until this permission is granted to the role.
+      </div>
+
       <label v-else class="ems-field">
         <span class="ems-field__label">Stakeholder type<span class="ems-field__req">*</span></span>
         <span class="ems-field__control" :class="{ 'ems-field__control--error': !!formErrors.anchor }">
-          <select v-model="form.stakeholder_type" class="ems-field__input">
-            <option value="">— Select a stakeholder type —</option>
-            <option v-for="type in stakeholderTypes" :key="type.value" :value="type.value">{{ type.label }}</option>
-          </select>
+          <input
+            v-model.trim="form.stakeholder_type"
+            class="ems-field__input"
+            list="ems-authority-stakeholder-types"
+            placeholder="e.g. Owner, Director, Advisor"
+            maxlength="30"
+            autocomplete="off"
+          />
         </span>
+        <datalist id="ems-authority-stakeholder-types">
+          <option v-for="type in stakeholderTypes" :key="type.value" :value="type.value">{{ type.label }}</option>
+        </datalist>
         <span v-if="formErrors.anchor" class="ems-field__error">{{ formErrors.anchor }}</span>
+        <span v-else class="ems-small ems-muted">Choose a suggestion or type a custom stakeholder title.</span>
       </label>
 
       <label class="ems-field">
@@ -574,6 +600,19 @@ const roleOptions = computed(() => {
   }
   return options
 })
+
+function roleLacksApproval(number) {
+  if (!number) {
+    return false
+  }
+  const role = roleMap.value.get(number)
+  if (!role || !Array.isArray(role.permissions)) {
+    return false
+  }
+  return !role.permissions.includes('act_ems_approval')
+}
+
+const selectedRoleLacksApproval = computed(() => roleLacksApproval(form.role_number))
 const isFiltering = computed(
   () => search.value.trim() !== '' || decisionFilter.value !== 'ALL' || statusFilter.value !== 'ALL',
 )
@@ -607,8 +646,20 @@ function roleName(number) {
   return roleMap.value.get(number)?.name || number || '—'
 }
 
+function humanize(value) {
+  return String(value || '')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^./, (character) => character.toUpperCase())
+}
+
 function stakeholderTypeLabel(value) {
-  return stakeholderTypes.find((type) => type.value === value)?.label || value || '—'
+  const known = stakeholderTypes.find((type) => type.value === value)
+  if (known) {
+    return known.label
+  }
+  return value ? humanize(value) : '—'
 }
 
 function holderLabel(item) {
@@ -808,10 +859,13 @@ function validateForm() {
     formErrors.anchor = 'Select or enter a role.'
     valid = false
   }
-  if (form.anchor_type === 'stakeholder_type' && !form.stakeholder_type) {
-    formErrors.anchor = 'Select a stakeholder type.'
-    valid = false
-  }
+    if (form.anchor_type === 'stakeholder_type' && !form.stakeholder_type) {
+      formErrors.anchor = 'Select or enter a stakeholder type.'
+      valid = false
+    } else if (form.anchor_type === 'stakeholder_type' && form.stakeholder_type.length > 30) {
+      formErrors.anchor = 'Use 30 characters or fewer.'
+      valid = false
+    }
 
   const min = form.min_amount === '' ? null : Number(form.min_amount)
   const max = form.max_amount === '' ? null : Number(form.max_amount)
@@ -848,7 +902,7 @@ async function save() {
     min_amount: form.min_amount === '' ? null : Number(form.min_amount),
     max_amount: form.max_amount === '' ? null : Number(form.max_amount),
     role_number: form.anchor_type === 'role' ? form.role_number.trim() : '',
-    stakeholder_type: form.anchor_type === 'stakeholder_type' ? form.stakeholder_type : '',
+    stakeholder_type: form.anchor_type === 'stakeholder_type' ? form.stakeholder_type.trim() : '',
     organisation_unit_number: form.organisation_unit_number || '',
     valid_from: toIso(form.valid_from),
     valid_to: toIso(form.valid_to),

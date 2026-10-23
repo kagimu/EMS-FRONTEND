@@ -1,5 +1,18 @@
 <template>
   <div>
+    <div v-if="config.manageTab" class="ems-manage-banner">
+      <div>
+        <strong>This is the read-only view.</strong>
+        <span class="ems-small ems-muted">Create and manage these records in the Organisation workspace.</span>
+      </div>
+      <router-link
+        class="ems-btn ems-btn--primary"
+        :to="{ path: '/ems/organisation', query: { tab: config.manageTab } }"
+      >
+        Manage in Organisation
+      </router-link>
+    </div>
+
     <EmsContentPanel
       :title="config.title"
       :icon="config.icon"
@@ -167,3 +180,25 @@ async function load() {
 
 onMounted(load)
 </script>
+
+<style scoped>
+.ems-manage-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: #fff;
+  border: 1px solid #e6e9f0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.ems-manage-banner > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+</style>

@@ -1,5 +1,10 @@
 <template>
+  <MotionConfig reducedMotion="user">
   <div class="ems-app">
+    <div class="ems-scroll-progress" aria-hidden="true">
+      <span :style="{ transform: `scaleX(${scrollProgress})` }"></span>
+    </div>
+
     <header class="ems-topbar">
       <div class="ems-topbar__inner">
         <div class="ems-topbar__brand">
@@ -41,7 +46,7 @@
 
         <nav class="ems-nav" aria-label="EMS sections">
           <router-link
-            v-for="item in navItems"
+            v-for="item in visibleNavItems"
             :key="item.name"
             class="ems-nav__item"
             :class="{ 'ems-nav__item--active': item.name === activeName }"
@@ -56,34 +61,55 @@
     </div>
 
     <main class="ems-page">
-      <router-view />
+      <router-view v-slot="{ Component, route: currentRoute }">
+        <AnimatePresence mode="wait">
+          <motion.div
+            v-if="Component"
+            :key="currentRoute.path"
+            class="ems-route"
+            :initial="{ opacity: 0, y: 18, scale: 0.995 }"
+            :animate="{ opacity: 1, y: 0, scale: 1 }"
+            :exit="{ opacity: 0, y: -12, scale: 0.995 }"
+            :transition="{ type: 'spring', stiffness: 280, damping: 28, mass: 0.8 }"
+          >
+            <component :is="Component" />
+          </motion.div>
+        </AnimatePresence>
+      </router-view>
     </main>
   </div>
+  </MotionConfig>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useAbility } from '@casl/vue'
+import { AnimatePresence, MotionConfig, motion } from 'motion-v'
 
 import api from '@/config/api.js'
 import logoUrl from '@/main/ems/assets/ems-logo.svg'
 import { useAuthStore } from '@/main/auth/store/auth.js'
+import { useEmsOrganisationStore } from '@/main/ems/store/organisation.js'
 import '@/main/ems/ems-shell.css'
 
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
+const orgStore = useEmsOrganisationStore()
+const { can } = useAbility()
 
-// Only routes that actually exist are exposed.
+// Only routes that actually exist are exposed. Each item is shown only when the
+// current user holds its view permission (installation Admins see all).
 const navItems = [
   { name: 'ems-dashboard', label: 'Dashboard', icon: 'bi bi-speedometer2' },
-  { name: 'ems-organisation', label: 'Organisation', icon: 'bi bi-diagram-3' },
-  { name: 'ems-stakeholders', label: 'Stakeholders', icon: 'bi bi-people' },
-  { name: 'ems-workflows', label: 'Workflows', icon: 'bi bi-diagram-2' },
-  { name: 'ems-addons', label: 'Add-ons', icon: 'bi bi-grid-3x3-gap' },
-  { name: 'ems-notifications', label: 'Notifications', icon: 'bi bi-bell' },
-  { name: 'ems-audit', label: 'Audit', icon: 'bi bi-clipboard-data' },
-  { name: 'ems-licensing', label: 'Licensing', icon: 'bi bi-patch-check' },
+  { name: 'ems-organisation', label: 'Organisation', icon: 'bi bi-diagram-3', permission: 'view_ems_organisation' },
+  { name: 'ems-stakeholders', label: 'Stakeholders', icon: 'bi bi-people', permission: 'view_ems_stakeholders' },
+  { name: 'ems-workflows', label: 'Workflows', icon: 'bi bi-diagram-2', permission: 'view_ems_workflow' },
+  { name: 'ems-addons', label: 'Add-ons', icon: 'bi bi-grid-3x3-gap', permission: 'view_ems_modules' },
+  { name: 'ems-notifications', label: 'Notifications', icon: 'bi bi-bell', permission: 'view_ems_notifications' },
+  { name: 'ems-audit', label: 'Audit', icon: 'bi bi-clipboard-data', permission: 'view_ems_audit' },
+  { name: 'ems-licensing', label: 'Licensing', icon: 'bi bi-patch-check', permission: 'view_licence_status' },
   { name: 'ems-settings', label: 'Settings', icon: 'bi bi-gear' },
   { name: 'ems-subscription', label: 'Subscription', icon: 'bi bi-arrow-repeat' },
 ]
@@ -92,8 +118,21 @@ const activeName = computed(() => String(route.name || ''))
 const pageTitle = computed(() => String(route.meta?.title || 'Dashboard'))
 const pageSubtitle = computed(() => String(route.meta?.subtitle || ''))
 
-const orgName = ref('')
 const profile = ref(authStore.profile || readStoredProfile())
+const orgName = computed(() => orgStore.current?.name || '')
+const scrollProgress = ref(0)
+let scrollFrame = 0
+
+const isAdmin = computed(() => (profile.value?.type || authStore.profile?.type) === 'Admin')
+const visibleNavItems = computed(() =>
+  navItems.filter(
+    (item) =>
+      !item.permission ||
+      isAdmin.value ||
+      can(item.permission, 'general') ||
+      can(item.permission, 'all'),
+  ),
+)
 
 const displayName = computed(() => {
   const p = profile.value
@@ -122,19 +161,49 @@ onMounted(async () => {
     try {
       const response = await api.get('main/profile')
       profile.value = response?.data?.data || null
+      if (profile.value) {
+        authStore.profile = profile.value
+      }
     } catch (error) {
       // Non-fatal: the header simply shows a generic label.
     }
   }
 
-  try {
-    const response = await api.get('main/eos/entity/current')
-    const entity = response?.data?.data
-    if (entity && entity.name) {
-      orgName.value = entity.name
-    }
-  } catch (error) {
-    // Non-fatal: organisation name is best-effort.
+  await orgStore.load()
+})
+
+watch(
+  () => route.path,
+  () => {
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' })
+  },
+)
+
+function updateScrollProgress() {
+  const max = document.documentElement.scrollHeight - window.innerHeight
+  scrollProgress.value = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
+}
+
+function onScroll() {
+  if (scrollFrame) {
+    return
+  }
+  scrollFrame = window.requestAnimationFrame(() => {
+    scrollFrame = 0
+    updateScrollProgress()
+  })
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', onScroll, { passive: true })
+  updateScrollProgress()
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScroll)
+  if (scrollFrame) {
+    window.cancelAnimationFrame(scrollFrame)
   }
 })
 

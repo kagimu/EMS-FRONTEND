@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import api from "@/config/api.js";
+import { updateAbilities } from "@/abilities";
 
 export const useAuthStore = defineStore("auth", () => {
     let loginResponse = ref(null)
@@ -37,6 +38,7 @@ export const useAuthStore = defineStore("auth", () => {
                         }
                     }
                     localStorage.setItem('abilities', JSON.stringify(permissions))
+                    updateAbilities(permissions)
 
                     // localStorage.setItem("expires_in", dataInfo.expires_in)
                     loginResponse.value = dataInfo
@@ -74,6 +76,7 @@ export const useAuthStore = defineStore("auth", () => {
                 let user = response.data
                 localStorage.setItem("userProfile", JSON.stringify(user.data))
                 profile.value = user.data
+                syncAbilitiesWithProfile(user.data)
             })
             .catch((error) => {
                 if(error && error.response){
@@ -115,7 +118,32 @@ export const useAuthStore = defineStore("auth", () => {
             let profileData = JSON.parse(data)
             profile.value = profileData
             userNumber.value = profileData.number
+            syncAbilitiesWithProfile(profileData)
         }
+    }
+
+    // Keep the live CASL ability in sync with the session. The login response
+    // sets granular abilities; a restored Admin session must always have the
+    // installation-level manage rule even if the stored ability list is stale
+    // or missing. This is presentation-only: the backend still authorises.
+    function syncAbilitiesWithProfile(profileData) {
+        if (!profileData) {
+            return
+        }
+
+        let stored = []
+        try {
+            stored = JSON.parse(localStorage.getItem('abilities') || '[]')
+        } catch (error) {
+            stored = []
+        }
+
+        if (profileData.type === 'Admin' && !stored.some((rule) => rule.action === 'manage')) {
+            stored = [{ action: 'manage', resource: 'all' }]
+            localStorage.setItem('abilities', JSON.stringify(stored))
+        }
+
+        updateAbilities(stored)
     }
 
     async function setUserPassword(data) {

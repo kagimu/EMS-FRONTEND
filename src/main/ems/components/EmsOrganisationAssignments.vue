@@ -21,11 +21,21 @@
     <template #empty>
       <p class="ems-empty__title">No assignments recorded yet</p>
       <p class="ems-empty__msg">
-        Assign an existing person to an active organisation unit and record their position title.
+        Assign an existing person to an active organisation unit and record their position title. People must
+        already have EMS user accounts.
       </p>
-      <div v-if="canManage" class="ems-actions" style="justify-content: center; margin-top: 14px;">
+      <div v-if="canManage && activeUnits.length" class="ems-actions" style="justify-content: center; margin-top: 14px;">
         <button type="button" class="ems-btn ems-btn--primary" @click="openCreate">Create the first assignment</button>
       </div>
+      <div v-else-if="canManage && !unitsError" class="ems-actions" style="justify-content: center; margin-top: 14px;">
+        <router-link
+          class="ems-btn ems-btn--primary"
+          :to="{ path: '/ems/organisation', query: { tab: 'structure' } }"
+        >
+          Create or activate an organisation unit
+        </router-link>
+      </div>
+      <p v-else-if="unitsError" class="ems-small ems-muted">{{ unitsError }}</p>
     </template>
 
     <div v-if="listState === 'ready'" class="ems-form">
@@ -36,6 +46,11 @@
       <p v-if="!canManage" class="ems-small ems-muted">
         You can view assignments. Creating, editing and changing status requires the assignment management
         permission.
+      </p>
+
+      <p class="ems-small ems-muted">
+        An assignment connects a person to an organisation unit and position title. A position title is a job
+        title, not a software role; one person can have several assignments. Create units and user accounts first.
       </p>
 
       <p v-if="unitsError" class="ems-small ems-muted">{{ unitsError }}</p>
@@ -56,7 +71,7 @@
         </select>
         <select v-model="typeFilter" class="ems-select" aria-label="Filter by assignment type">
           <option value="ALL">All types</option>
-          <option v-for="type in assignmentTypes" :key="type.value" :value="type.value">{{ type.label }}</option>
+          <option v-for="type in assignmentTypeOptions" :key="type.value" :value="type.value">{{ type.label }}</option>
         </select>
         <select v-model="statusFilter" class="ems-select" aria-label="Filter by status">
           <option value="ALL">All statuses</option>
@@ -189,11 +204,21 @@
 
       <label class="ems-field">
         <span class="ems-field__label">Assignment type<span class="ems-field__req">*</span></span>
-        <span class="ems-field__control">
-          <select v-model="form.assignment_type" class="ems-field__input">
-            <option v-for="type in assignmentTypes" :key="type.value" :value="type.value">{{ type.label }}</option>
-          </select>
+        <span class="ems-field__control" :class="{ 'ems-field__control--error': !!formErrors.assignment_type }">
+          <input
+            v-model.trim="form.assignment_type"
+            class="ems-field__input"
+            list="ems-assignment-type-options"
+            placeholder="e.g. Manager, Deputy Head, Coordinator"
+            maxlength="30"
+            autocomplete="off"
+          />
         </span>
+        <datalist id="ems-assignment-type-options">
+          <option v-for="type in assignmentTypeOptions" :key="type.value" :value="type.value">{{ type.label }}</option>
+        </datalist>
+        <span v-if="formErrors.assignment_type" class="ems-field__error">{{ formErrors.assignment_type }}</span>
+        <span v-else class="ems-small ems-muted">Choose a suggestion or type a custom assignment title.</span>
       </label>
 
       <EmsField v-model="form.position_title" label="Position title (optional)" placeholder="e.g. Operations Manager" />
@@ -311,6 +336,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useAbility } from '@casl/vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import api from '@/config/api.js'
 import EmsContentPanel from '@/main/ems/components/EmsContentPanel.vue'
@@ -319,6 +345,9 @@ import EmsModal from '@/main/ems/components/EmsModal.vue'
 
 const API = 'main/ems/user-assignments'
 const UNITS_API = 'main/ems/organisation-units'
+const STAKEHOLDERS_API = 'main/ems/stakeholders'
+const route = useRoute()
+const router = useRouter()
 const { can } = useAbility()
 
 const canManage = computed(
@@ -338,6 +367,7 @@ const statuses = ['ACTIVE', 'INACTIVE', 'ENDED']
 
 const assignments = ref([])
 const units = ref([])
+const stakeholderUsers = ref([])
 const listState = ref('loading')
 const listError = ref('')
 const unitsError = ref('')
@@ -360,7 +390,7 @@ const form = reactive({
   valid_from: '',
   valid_to: '',
 })
-const formErrors = reactive({ user_number: '', unit: '', dates: '', general: '' })
+const formErrors = reactive({ user_number: '', unit: '', assignment_type: '', dates: '', general: '' })
 
 const detailItem = ref(null)
 const confirmState = reactive({ open: false, item: null, status: 'INACTIVE', error: '' })
@@ -368,8 +398,26 @@ const statusSaving = ref(false)
 
 const unitMap = computed(() => new Map(units.value.map((unit) => [unit.number, unit])))
 const activeUnits = computed(() => units.value.filter((unit) => unit.status === 'ACTIVE'))
+
+const assignmentTypeOptions = computed(() => {
+  const options = new Map(assignmentTypes.map((type) => [type.value, type.label]))
+  for (const item of assignments.value) {
+    const value = String(item.assignment_type || '').trim()
+    if (value && !options.has(value)) {
+      options.set(value, humanize(value))
+    }
+  }
+  return [...options.entries()].map(([value, label]) => ({ value, label }))
+})
+
 const userSuggestions = computed(() =>
-  [...new Set(assignments.value.map((item) => item.user_number).filter(Boolean))].sort((a, b) => a.localeCompare(b)),
+  [
+    ...new Set(
+      [...assignments.value.map((item) => item.user_number), ...stakeholderUsers.value]
+        .map((value) => String(value || '').trim())
+        .filter(Boolean),
+    ),
+  ].sort((a, b) => a.localeCompare(b)),
 )
 const isFiltering = computed(
   () =>
@@ -420,8 +468,20 @@ const confirmTitle = computed(() => {
   return 'Deactivate assignment'
 })
 
+function humanize(value) {
+  return String(value || '')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^./, (character) => character.toUpperCase())
+}
+
 function assignmentTypeLabel(value) {
-  return assignmentTypes.find((type) => type.value === value)?.label || value || '—'
+  const known = assignmentTypes.find((type) => type.value === value)
+  if (known) {
+    return known.label
+  }
+  return value ? humanize(value) : '—'
 }
 
 function statusClass(status) {
@@ -489,9 +549,10 @@ async function load() {
   listError.value = ''
   unitsError.value = ''
   try {
-    const [assignmentsResult, unitsResult] = await Promise.allSettled([
+    const [assignmentsResult, unitsResult, stakeholdersResult] = await Promise.allSettled([
       api.get(API, { timeout: 15000 }),
       api.get(UNITS_API, { timeout: 15000 }),
+      api.get(STAKEHOLDERS_API, { timeout: 15000 }),
     ])
 
     if (assignmentsResult.status === 'rejected') {
@@ -506,6 +567,18 @@ async function load() {
     } else {
       units.value = []
       unitsError.value = 'Organisation units could not be loaded; unit names may be shown as numbers.'
+    }
+
+    if (stakeholdersResult.status === 'fulfilled') {
+      const stakeholders = Array.isArray(stakeholdersResult.value?.data?.data)
+        ? stakeholdersResult.value.data.data
+        : []
+      stakeholderUsers.value = stakeholders
+        .filter((item) => item.status === 'ACTIVE')
+        .map((item) => item.user_number)
+        .filter(Boolean)
+    } else {
+      stakeholderUsers.value = []
     }
 
     listState.value = assignments.value.length ? 'ready' : 'empty'
@@ -525,6 +598,7 @@ function clearFilters() {
 function resetFormErrors() {
   formErrors.user_number = ''
   formErrors.unit = ''
+  formErrors.assignment_type = ''
   formErrors.dates = ''
   formErrors.general = ''
 }
@@ -586,8 +660,11 @@ function validateForm() {
     formErrors.unit = 'Select an organisation unit.'
     valid = false
   }
-  if (!form.assignment_type) {
-    formErrors.general = 'Select an assignment type.'
+  if (!form.assignment_type || !form.assignment_type.trim()) {
+    formErrors.assignment_type = 'Assignment type is required.'
+    valid = false
+  } else if (form.assignment_type.trim().length > 30) {
+    formErrors.assignment_type = 'Use 30 characters or fewer.'
     valid = false
   }
   if (form.valid_from && form.valid_to) {
@@ -609,7 +686,7 @@ async function save() {
 
   const payload = {
     organisation_unit_number: form.organisation_unit_number,
-    assignment_type: form.assignment_type,
+    assignment_type: form.assignment_type.trim(),
     position_title: form.position_title.trim(),
     valid_from: toIso(form.valid_from),
     valid_to: toIso(form.valid_to),
@@ -683,7 +760,19 @@ function openDetails(item) {
   detailItem.value = item
 }
 
-onMounted(load)
+onMounted(async () => {
+  await load()
+
+  if (!canManage.value) {
+    return
+  }
+  const requestedUser = String(route.query.user || '').trim()
+  if (requestedUser && activeUnits.value.length) {
+    openCreate()
+    form.user_number = requestedUser
+    router.replace({ query: { ...route.query, user: undefined } })
+  }
+})
 </script>
 
 <style scoped>

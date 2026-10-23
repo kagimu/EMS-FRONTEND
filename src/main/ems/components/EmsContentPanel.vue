@@ -21,9 +21,11 @@
     <div class="ems-panel__body">
       <slot name="toolbar" />
 
-      <div v-if="state === 'loading'" class="ems-empty">
-        <span class="ems-inline-spinner" aria-hidden="true"></span>
-        <p class="ems-empty__msg" style="margin-top: 10px;">Loading…</p>
+      <div v-if="state === 'loading'" class="ems-skeleton" role="status" aria-label="Loading">
+        <span class="ems-skeleton__row ems-skeleton__row--title" aria-hidden="true"></span>
+        <span class="ems-skeleton__row" aria-hidden="true"></span>
+        <span class="ems-skeleton__row" aria-hidden="true"></span>
+        <span class="ems-skeleton__row ems-skeleton__row--short" aria-hidden="true"></span>
       </div>
 
       <div v-else-if="state === 'error'" class="ems-empty">

@@ -237,6 +237,13 @@ const switchUser = async () => {
                   :class="defaultMenuSize ? 'transition ease-in-out rotate-0 duration-700' : 'transition ease-in-out -rotate-180 duration-700'"
               ></i>
               <router-link class="navbar-brand text-white" :to="{name:'home'}"><div class="text-[17px]">{{ entityName }}</div> </router-link>
+              <router-link
+                  :to="{ name: 'ems-dashboard' }"
+                  class="text-[#2c2f8c] bg-white text-xs rounded-sm ml-4 px-2 py-1 cursor-pointer mt-2 inline-flex items-center gap-1 whitespace-nowrap no-underline"
+                  title="Return to the EMS Dashboard"
+              >
+                <i class="bi bi-grid-1x2-fill"></i> EMS Dashboard
+              </router-link>
               <div>
                         <span v-if="can('can_serve_as_teacher_and_admin','general')">
                       <button

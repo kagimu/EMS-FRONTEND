@@ -22,6 +22,7 @@ export const emsSections = {
     icon: 'bi bi-people',
     endpoint: '/main/ems/stakeholders',
     countNoun: 'stakeholder',
+    manageTab: 'people',
     columns: [
       { key: 'user_number', label: 'User', primary: true },
       { key: 'stakeholder_type', label: 'Type', type: 'status' },
@@ -36,6 +37,7 @@ export const emsSections = {
     icon: 'bi bi-diagram-2',
     endpoint: '/main/ems/approvals',
     countNoun: 'request',
+    manageTab: 'approvals',
     columns: [
       { key: 'title', label: 'Title', primary: true },
       { key: 'decision_type', label: 'Decision' },

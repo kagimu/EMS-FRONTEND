@@ -14,19 +14,22 @@
         Refresh
       </button>
       <template v-if="canManage">
-        <button type="button" class="ems-btn" @click="openCreate('staff')">Add person</button>
-        <button type="button" class="ems-btn ems-btn--primary" @click="openCreate('owner')">Add owner</button>
+        <button type="button" class="ems-btn ems-btn--primary" @click="openCreateEmployee">Add employee</button>
+        <button type="button" class="ems-btn" @click="openCreate('staff')">Add existing person</button>
+        <button type="button" class="ems-btn" @click="openCreate('owner')">Add owner</button>
       </template>
     </template>
 
     <template #empty>
       <p class="ems-empty__title">No stakeholders recorded yet</p>
       <p class="ems-empty__msg">
-        Record the people who own, govern, work for or relate to your organisation.
+        Add an employee to generate an EMS user number automatically, or record an existing EMS user as a
+        stakeholder. Employees can then be given assignments.
       </p>
       <div v-if="canManage" class="ems-actions" style="justify-content: center; margin-top: 14px;">
-        <button type="button" class="ems-btn" @click="openCreate('staff')">Add the first person</button>
-        <button type="button" class="ems-btn ems-btn--primary" @click="openCreate('owner')">Add an owner</button>
+        <button type="button" class="ems-btn ems-btn--primary" @click="openCreateEmployee">Add an employee</button>
+        <button type="button" class="ems-btn" @click="openCreate('staff')">Add existing person</button>
+        <button type="button" class="ems-btn" @click="openCreate('owner')">Add an owner</button>
       </div>
     </template>
 
@@ -38,6 +41,12 @@
       <p v-if="!canManage" class="ems-small ems-muted">
         You can view stakeholders. Creating, editing and changing status requires the stakeholder management
         permission.
+      </p>
+
+      <p class="ems-small ems-muted">
+        A stakeholder is a person or party associated with the organisation. "Add employee" creates a staff
+        identity with a generated user number and attaches it to this organisation; "Add existing person" links
+        an account that already exists. Ownership is separate from employment and management assignments.
       </p>
 
       <div class="ems-kpis">
@@ -71,7 +80,7 @@
         </label>
         <select v-model="typeFilter" class="ems-select" aria-label="Filter by stakeholder type">
           <option value="ALL">All types</option>
-          <option v-for="type in stakeholderTypes" :key="type.value" :value="type.value">{{ type.label }}</option>
+          <option v-for="type in stakeholderTypeOptions" :key="type.value" :value="type.value">{{ type.label }}</option>
         </select>
         <select v-model="statusFilter" class="ems-select" aria-label="Filter by status">
           <option value="ALL">All statuses</option>
@@ -136,6 +145,12 @@
               <td>
                 <div class="ems-people-actions">
                   <button type="button" class="ems-link" @click="openDetails(item)">View</button>
+                  <router-link
+                    class="ems-link"
+                    :to="{ path: '/ems/organisation', query: { tab: 'assignments', user: item.user_number } }"
+                  >
+                    Assign
+                  </router-link>
                   <template v-if="canManage">
                     <button type="button" class="ems-link" @click="openEdit(item)">Edit</button>
                     <button
@@ -192,12 +207,23 @@
 
       <label v-if="formMode === 'create'" class="ems-field">
         <span class="ems-field__label">Stakeholder type<span class="ems-field__req">*</span></span>
-        <span class="ems-field__control">
-          <select v-model="form.stakeholder_type" class="ems-field__input">
-            <option v-for="type in stakeholderTypes" :key="type.value" :value="type.value">{{ type.label }}</option>
-          </select>
+        <span class="ems-field__control" :class="{ 'ems-field__control--error': !!formErrors.stakeholder_type }">
+          <input
+            v-model.trim="form.stakeholder_type"
+            class="ems-field__input"
+            list="ems-stakeholder-type-options"
+            placeholder="e.g. Staff, Board member, Advisor"
+            maxlength="30"
+            autocomplete="off"
+          />
         </span>
-        <span class="ems-small ems-muted">The person and type cannot be changed after creation.</span>
+        <datalist id="ems-stakeholder-type-options">
+          <option v-for="type in stakeholderTypeOptions" :key="type.value" :value="type.value">{{ type.label }}</option>
+        </datalist>
+        <span v-if="formErrors.stakeholder_type" class="ems-field__error">{{ formErrors.stakeholder_type }}</span>
+        <span v-else class="ems-small ems-muted">
+          Choose a suggestion or type a custom title. The person and type cannot be changed after creation.
+        </span>
       </label>
 
       <div v-else class="ems-kv-card" style="margin-bottom: 8px;">
@@ -256,6 +282,121 @@
       <button type="button" class="ems-btn ems-btn--ghost" :disabled="formSaving" @click="closeForm">Cancel</button>
       <button type="button" class="ems-btn ems-btn--primary" :disabled="formSaving" @click="save">
         {{ formSaving ? 'Saving…' : formMode === 'create' ? 'Add stakeholder' : 'Save changes' }}
+      </button>
+    </template>
+  </EmsModal>
+
+  <!-- Add employee: creates a staff identity with a generated user number -->
+  <EmsModal :open="employeeOpen" title="Add employee" icon="bi bi-person-plus" @close="closeEmployee">
+    <div class="ems-form">
+      <p class="ems-small ems-muted">
+        The system generates the user number. The employee is attached to this organisation and can then be
+        given assignments. An invitation email is sent so they can set a password.
+      </p>
+
+      <div class="ems-toolbar">
+        <EmsField
+          v-model="employeeForm.first_name"
+          label="First name"
+          required
+          :error="employeeErrors.first_name"
+        />
+        <EmsField
+          v-model="employeeForm.second_name"
+          label="Second name"
+          required
+          :error="employeeErrors.second_name"
+        />
+      </div>
+
+      <div class="ems-toolbar">
+        <EmsField
+          v-model="employeeForm.last_name"
+          label="Last name (optional)"
+          :error="employeeErrors.last_name"
+        />
+        <label class="ems-field">
+          <span class="ems-field__label">Gender<span class="ems-field__req">*</span></span>
+          <span class="ems-field__control" :class="{ 'ems-field__control--error': !!employeeErrors.gender }">
+            <select v-model="employeeForm.gender" class="ems-field__input">
+              <option value="">— Select —</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </span>
+          <span v-if="employeeErrors.gender" class="ems-field__error">{{ employeeErrors.gender }}</span>
+        </label>
+      </div>
+
+      <EmsField
+        v-model="employeeForm.email"
+        label="Email address"
+        type="email"
+        inputmode="email"
+        required
+        :error="employeeErrors.email"
+      />
+      <EmsField
+        v-model="employeeForm.phone"
+        label="Phone number (optional)"
+        type="tel"
+        inputmode="tel"
+        :error="employeeErrors.phone"
+      />
+
+      <label class="ems-field">
+        <span class="ems-field__label">Stakeholder type<span class="ems-field__req">*</span></span>
+        <span class="ems-field__control" :class="{ 'ems-field__control--error': !!employeeErrors.stakeholder_type }">
+          <input
+            v-model.trim="employeeForm.stakeholder_type"
+            class="ems-field__input"
+            list="ems-employee-stakeholder-type-options"
+            placeholder="e.g. Staff, Board member, Advisor"
+            maxlength="30"
+            autocomplete="off"
+          />
+        </span>
+        <datalist id="ems-employee-stakeholder-type-options">
+          <option v-for="type in stakeholderTypeOptions" :key="type.value" :value="type.value">{{ type.label }}</option>
+        </datalist>
+        <span v-if="employeeErrors.stakeholder_type" class="ems-field__error">{{ employeeErrors.stakeholder_type }}</span>
+        <span v-else class="ems-small ems-muted">Choose a suggestion or type a custom title.</span>
+      </label>
+
+      <EmsField
+        v-model="employeeForm.title"
+        label="Position / role title (optional)"
+        placeholder="e.g. Operations Manager"
+      />
+
+      <div class="ems-toolbar">
+        <label class="ems-field">
+          <span class="ems-field__label">Valid from (optional)</span>
+          <span class="ems-field__control">
+            <input v-model="employeeForm.valid_from" class="ems-field__input" type="date" />
+          </span>
+        </label>
+        <label class="ems-field">
+          <span class="ems-field__label">Valid to (optional)</span>
+          <span class="ems-field__control" :class="{ 'ems-field__control--error': !!employeeErrors.dates }">
+            <input v-model="employeeForm.valid_to" class="ems-field__input" type="date" />
+          </span>
+          <span v-if="employeeErrors.dates" class="ems-field__error">{{ employeeErrors.dates }}</span>
+        </label>
+      </div>
+
+      <div v-if="employeeErrors.general" class="ems-alert ems-alert--error" role="alert">
+        {{ employeeErrors.general }}
+      </div>
+    </div>
+
+    <template #actions>
+      <button type="button" class="ems-btn ems-btn--ghost" :disabled="employeeSaving" @click="closeEmployee">
+        Cancel
+      </button>
+      <button type="button" class="ems-btn ems-btn--primary" :disabled="employeeSaving" @click="saveEmployee">
+        {{ employeeSaving ? 'Creating…' : 'Create employee' }}
       </button>
     </template>
   </EmsModal>
@@ -405,9 +546,36 @@ const form = reactive({
 })
 const formErrors = reactive({
   user_number: '',
+  stakeholder_type: '',
   title: '',
   share_percentage: '',
   shares: '',
+  dates: '',
+  general: '',
+})
+
+const employeeOpen = ref(false)
+const employeeSaving = ref(false)
+const employeeForm = reactive({
+  first_name: '',
+  second_name: '',
+  last_name: '',
+  gender: '',
+  email: '',
+  phone: '',
+  stakeholder_type: 'staff',
+  title: '',
+  valid_from: '',
+  valid_to: '',
+})
+const employeeErrors = reactive({
+  first_name: '',
+  second_name: '',
+  last_name: '',
+  gender: '',
+  email: '',
+  phone: '',
+  stakeholder_type: '',
   dates: '',
   general: '',
 })
@@ -419,6 +587,17 @@ const statusSaving = ref(false)
 const userSuggestions = computed(() =>
   [...new Set(items.value.map((item) => item.user_number).filter(Boolean))].sort((a, b) => a.localeCompare(b)),
 )
+
+const stakeholderTypeOptions = computed(() => {
+  const options = new Map(stakeholderTypes.map((type) => [type.value, type.label]))
+  for (const item of items.value) {
+    const value = String(item.stakeholder_type || '').trim()
+    if (value && !options.has(value)) {
+      options.set(value, humanize(value))
+    }
+  }
+  return [...options.entries()].map(([value, label]) => ({ value, label }))
+})
 
 const isFiltering = computed(
   () => search.value.trim() !== '' || typeFilter.value !== 'ALL' || statusFilter.value !== 'ALL',
@@ -471,8 +650,20 @@ const confirmTitle = computed(() => {
   return 'Deactivate record'
 })
 
+function humanize(value) {
+  return String(value || '')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^./, (character) => character.toUpperCase())
+}
+
 function typeLabel(value) {
-  return stakeholderTypes.find((type) => type.value === value)?.label || value || '—'
+  const known = stakeholderTypes.find((type) => type.value === value)
+  if (known) {
+    return known.label
+  }
+  return value ? humanize(value) : '—'
 }
 
 function statusClass(status) {
@@ -595,6 +786,7 @@ function toggleOwnersOnly() {
 
 function resetFormErrors() {
   formErrors.user_number = ''
+  formErrors.stakeholder_type = ''
   formErrors.title = ''
   formErrors.share_percentage = ''
   formErrors.shares = ''
@@ -650,8 +842,12 @@ function validateForm() {
       formErrors.user_number = 'User number is required.'
       valid = false
     }
-    if (!form.stakeholder_type) {
-      formErrors.general = 'Select a stakeholder type.'
+    const type = form.stakeholder_type.trim()
+    if (!type) {
+      formErrors.stakeholder_type = 'Stakeholder type is required.'
+      valid = false
+    } else if (type.length > 30) {
+      formErrors.stakeholder_type = 'Use 30 characters or fewer.'
       valid = false
     }
   }
@@ -702,7 +898,7 @@ async function save() {
   try {
     if (formMode.value === 'create') {
       payload.user_number = form.user_number.trim()
-      payload.stakeholder_type = form.stakeholder_type
+      payload.stakeholder_type = form.stakeholder_type.trim()
       await api.post(API, payload, { timeout: 20000 })
     } else {
       await api.put(`${API}/${form.number}`, payload, { timeout: 20000 })
@@ -717,6 +913,131 @@ async function save() {
     formErrors.general = apiError(error, 'Could not save the stakeholder record.')
   } finally {
     formSaving.value = false
+  }
+}
+
+function resetEmployeeErrors() {
+  employeeErrors.first_name = ''
+  employeeErrors.second_name = ''
+  employeeErrors.last_name = ''
+  employeeErrors.gender = ''
+  employeeErrors.email = ''
+  employeeErrors.phone = ''
+  employeeErrors.stakeholder_type = ''
+  employeeErrors.dates = ''
+  employeeErrors.general = ''
+}
+
+function openCreateEmployee() {
+  resetEmployeeErrors()
+  employeeForm.first_name = ''
+  employeeForm.second_name = ''
+  employeeForm.last_name = ''
+  employeeForm.gender = ''
+  employeeForm.email = ''
+  employeeForm.phone = ''
+  employeeForm.stakeholder_type = 'staff'
+  employeeForm.title = ''
+  employeeForm.valid_from = ''
+  employeeForm.valid_to = ''
+  employeeOpen.value = true
+  detailItem.value = null
+}
+
+function closeEmployee() {
+  if (employeeSaving.value) {
+    return
+  }
+  employeeOpen.value = false
+  resetEmployeeErrors()
+}
+
+function validateEmployee() {
+  resetEmployeeErrors()
+  let valid = true
+
+  if (!employeeForm.first_name.trim()) {
+    employeeErrors.first_name = 'First name is required.'
+    valid = false
+  }
+  if (!employeeForm.second_name.trim()) {
+    employeeErrors.second_name = 'Second name is required.'
+    valid = false
+  }
+  if (!employeeForm.gender) {
+    employeeErrors.gender = 'Select a gender.'
+    valid = false
+  }
+  const email = employeeForm.email.trim()
+  if (!email) {
+    employeeErrors.email = 'Email address is required.'
+    valid = false
+  } else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    employeeErrors.email = 'Enter a valid email address.'
+    valid = false
+  } else if (email.length > 40) {
+    employeeErrors.email = 'Use 40 characters or fewer.'
+    valid = false
+  }
+  const type = employeeForm.stakeholder_type.trim()
+  if (!type) {
+    employeeErrors.stakeholder_type = 'Stakeholder type is required.'
+    valid = false
+  } else if (type.length > 30) {
+    employeeErrors.stakeholder_type = 'Use 30 characters or fewer.'
+    valid = false
+  }
+  if (employeeForm.valid_from && employeeForm.valid_to) {
+    if (new Date(employeeForm.valid_from).getTime() > new Date(employeeForm.valid_to).getTime()) {
+      employeeErrors.dates = 'Valid from cannot be after valid to.'
+      valid = false
+    }
+  }
+
+  return valid
+}
+
+async function saveEmployee() {
+  if (employeeSaving.value || !validateEmployee()) {
+    return
+  }
+
+  employeeSaving.value = true
+  notice.value = null
+
+  try {
+    const response = await api.post(
+      'main/ems/employees',
+      {
+        first_name: employeeForm.first_name.trim(),
+        second_name: employeeForm.second_name.trim(),
+        last_name: employeeForm.last_name.trim(),
+        gender: employeeForm.gender,
+        email: employeeForm.email.trim().toLowerCase(),
+        phone: employeeForm.phone.trim(),
+        stakeholder_type: employeeForm.stakeholder_type.trim(),
+        title: employeeForm.title.trim(),
+        valid_from: toIso(employeeForm.valid_from),
+        valid_to: toIso(employeeForm.valid_to),
+      },
+      { timeout: 30000 },
+    )
+    const data = response?.data?.data || {}
+    employeeOpen.value = false
+    const name = data?.stakeholder?.display_name || employeeForm.first_name.trim()
+    notice.value = {
+      ok: true,
+      text:
+        `Employee ${name} created. User number: ${data.user_number || 'generated'}. ` +
+        (data.invitation_sent
+          ? 'An invitation email was sent.'
+          : 'The invitation email could not be sent; they can set a password later through the reset flow.'),
+    }
+    await load()
+  } catch (error) {
+    employeeErrors.general = apiError(error, 'Could not create the employee.')
+  } finally {
+    employeeSaving.value = false
   }
 }
 

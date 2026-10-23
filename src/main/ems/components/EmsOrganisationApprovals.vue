@@ -95,10 +95,18 @@
     <template #empty>
       <p class="ems-empty__title">No approval requests yet</p>
       <p class="ems-empty__msg">
-        Create a request to have the configured decision authority resolve the required approval path.
+        Create a request to have the configured decision authority resolve the required approval path. If no
+        eligible approver can be found, the request is created as BLOCKED. Configure decision authority first if
+        you need formal approval controls.
       </p>
       <div v-if="canManageWorkflow" class="ems-actions" style="justify-content: center; margin-top: 14px;">
         <button type="button" class="ems-btn ems-btn--primary" @click="openCreate()">Create the first request</button>
+        <router-link
+          class="ems-btn"
+          :to="{ path: '/ems/organisation', query: { tab: 'authority' } }"
+        >
+          Open Decision Authority
+        </router-link>
       </div>
     </template>
 
@@ -212,7 +220,9 @@
 
       <p class="ems-small ems-muted">
         The module and resource fields identify the business record generically. This engine does not process
-        Finance, Procurement or any other business transaction.
+        Finance, Procurement or any other business transaction. Approvers need <code>act_ems_approval</code>;
+        unit-scoped authority also requires an active assignment in that unit. If no eligible approver can be
+        found, the request is created as BLOCKED.
       </p>
 
       <div class="ems-toolbar">

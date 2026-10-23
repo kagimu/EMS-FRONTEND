@@ -1,5 +1,10 @@
 <template>
-  <div class="ems-summary" :class="available ? `ems-summary--${tone}` : 'ems-summary--muted'">
+  <component
+    :is="to ? RouterLink : 'div'"
+    :to="to || undefined"
+    class="ems-summary"
+    :class="available ? `ems-summary--${tone}` : 'ems-summary--muted'"
+  >
     <span class="ems-summary__icon">
       <i :class="available ? icon : 'bi bi-slash-circle'"></i>
     </span>
@@ -8,11 +13,15 @@
       {{ available ? value : reason || 'Unavailable' }}
     </span>
     <span v-if="available && hint" class="ems-summary__hint">{{ hint }}</span>
-    <router-link v-if="available && to" class="ems-summary__link" :to="to">View</router-link>
-  </div>
+    <span v-if="to" class="ems-summary__link">
+      View <i class="bi bi-arrow-right" aria-hidden="true"></i>
+    </span>
+  </component>
 </template>
 
 <script setup>
+import { RouterLink } from 'vue-router'
+
 defineProps({
   label: { type: String, required: true },
   value: { type: [String, Number], default: '' },
